@@ -1,0 +1,89 @@
+
+ButtonPack.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Options
+  rotate: false
+  xy: 1, 768
+  size: 440, 160
+  orig: 440, 160
+  offset: 0, 0
+  index: -1
+OptionsClick
+  rotate: false
+  xy: 1, 606
+  size: 440, 160
+  orig: 440, 160
+  offset: 0, 0
+  index: -1
+OptionsHover
+  rotate: false
+  xy: 443, 768
+  size: 440, 160
+  orig: 440, 160
+  offset: 0, 0
+  index: -1
+Load
+  rotate: false
+  xy: 1, 424
+  size: 350, 180
+  orig: 350, 180
+  offset: 0, 0
+  index: -1
+LoadClick
+  rotate: false
+  xy: 1, 242
+  size: 350, 180
+  orig: 350, 180
+  offset: 0, 0
+  index: -1
+LoadHover
+  rotate: false
+  xy: 1, 60
+  size: 350, 180
+  orig: 350, 180
+  offset: 0, 0
+  index: -1
+Play
+  rotate: false
+  xy: 443, 566
+  size: 301, 200
+  orig: 301, 200
+  offset: 0, 0
+  index: -1
+PlayClick
+  rotate: false
+  xy: 353, 365
+  size: 300, 199
+  orig: 300, 199
+  offset: 0, 0
+  index: -1
+PlayHover
+  rotate: false
+  xy: 353, 163
+  size: 299, 200
+  orig: 299, 200
+  offset: 0, 0
+  index: -1
+Exit
+  rotate: false
+  xy: 353, 1
+  size: 280, 160
+  orig: 280, 160
+  offset: 0, 0
+  index: -1
+ExitClick
+  rotate: false
+  xy: 655, 404
+  size: 280, 160
+  orig: 280, 160
+  offset: 0, 0
+  index: -1
+ExitHover
+  rotate: false
+  xy: 655, 242
+  size: 280, 160
+  orig: 280, 160
+  offset: 0, 0
+  index: -1
