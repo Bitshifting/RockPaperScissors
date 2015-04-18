@@ -17,7 +17,6 @@ public abstract class GameObject {
         this.texture = new Texture(Gdx.files.internal("assets/tito.png"));
         this.rotation = 0.0f;
 
-
     }
 
     public abstract void update(float dt);
