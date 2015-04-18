@@ -5,9 +5,7 @@ import com.bitshifting.state.MainMenu;
 import com.bitshifting.state.State;
 
 import java.util.Stack;
-/**
- * Created by jdallman2570 on 2/23/2015.
- */
+
 public class StateManager {
 
     //state imnts
