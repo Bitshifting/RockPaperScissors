@@ -3,6 +3,7 @@ package com.bitshifting.state;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.bitshifting.entities.GameObject;
 import com.bitshifting.managers.InputManager;
 import com.bitshifting.managers.StateManager;
@@ -41,6 +42,33 @@ public class MainGame extends State{
 
     @Override
     public void update(float dt) {
+        // Move all entities to their next position based on their velocity
+        for (GameObject o : entities) {
+            o.lastPosition = o.position;
+            o.position = new Vector2(o.position.x + o.velocity.x, o.position.y + o.velocity.y);
+        }
+
+
+        // Now that everything is updated, check new positions for conflicts in the bounding boxes, and if there are
+        // conflicts, move back the entities to their previous position.
+        for (GameObject o : entities) {
+            // Check this entity against every other entity (o(n^2) heck yeah) and see if it collides. if it does, mark
+            // both entities as bouncing.
+            for (GameObject p : entities) {
+                if (o.collidesWith(p)) {
+                    o.bouncing = true;
+                    p.bouncing = true;
+                }
+            }
+        }
+
+        // Check for bounces and restore their previous positions.
+        for (GameObject o : entities) {
+            if (o.bouncing) {
+                o.position = o.lastPosition;
+            }
+        }
+
         /*
         Things we want to do:
         We want to detect collisions between players/bullets/walls
@@ -68,6 +96,7 @@ public class MainGame extends State{
         // First iterate through the players and detect the first two
 
         // Now iterate through the bullets and detect the next three
+
 
         Iterator<GameObject> objectIterator = entities.iterator();
 
