@@ -72,7 +72,6 @@ public class MainGame extends State{
         // Now iterate through the bullets and detect the next three
 
         Iterator<GameObject> objectIterator = entities.iterator();
-        objectIterator.
 
         // Determine if a player has died in the last update, if so, end the game or something
     }
