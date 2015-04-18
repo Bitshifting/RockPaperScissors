@@ -1,5 +1,7 @@
 package com.bitshifting.state;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.bitshifting.entities.GameObject;
 import com.bitshifting.managers.InputManager;
@@ -13,12 +15,8 @@ import java.util.List;
  * Created by sschwebach on 4/18/15.
  */
 public class MainGame extends State{
-    /*
-    Things we'll need:
-    A reference to player 1 and player 2
-    A reference to the InputManager class
-    A list of all game entities
-     */
+    GameObject player1;
+    GameObject player2;
 
     SpriteBatch batch; // Our sprite batch for rendering
     List<GameObject> entities; // the list of game entities
@@ -78,15 +76,17 @@ public class MainGame extends State{
 
     @Override
     public void render() {
-        // First begin the batch.draw
         batch.begin();
-        for (GameObject entity : entities){
-            // Call batch.draw for the entity
-            //batch.draw(entity.texture, entity.position.x, entity.position.y); // Something like this
-        }
-        // Finally end the batch draw thingy
-        batch.end();
 
+        for (GameObject entity : entities){
+            batch.draw(entity.texture, entity.position.x, entity.position.y);
+        }
+
+        // Draw the players on top of other entities
+        batch.draw(player1.texture, player1.position.x, player1.position.y);
+        batch.draw(player2.texture, player2.position.x, player2.position.y);
+
+        batch.end();
     }
 
     @Override
