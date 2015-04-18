@@ -1,7 +1,7 @@
-package com.bitshifting.State;
+package com.bitshifting.state;
 
 import com.bitshifting.Main;
-import com.bitshifting.Managers.StateManager;
+import com.bitshifting.managers.StateManager;
 
 /**
  * Created by jdallman2570 on 2/23/2015.

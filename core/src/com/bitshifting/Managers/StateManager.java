@@ -1,8 +1,8 @@
-package com.bitshifting.Managers;
+package com.bitshifting.managers;
 
 import com.bitshifting.Main;
-import com.bitshifting.State.MainMenu;
-import com.bitshifting.State.State;
+import com.bitshifting.state.MainMenu;
+import com.bitshifting.state.State;
 
 import java.util.Stack;
 /**

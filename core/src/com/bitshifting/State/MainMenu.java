@@ -1,6 +1,6 @@
-package com.bitshifting.State;
+package com.bitshifting.state;
 
-import com.bitshifting.Managers.StateManager;
+import com.bitshifting.managers.StateManager;
 
 public class MainMenu extends State {
     public MainMenu(StateManager sm) {
