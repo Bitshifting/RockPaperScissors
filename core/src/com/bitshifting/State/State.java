@@ -3,9 +3,6 @@ package com.bitshifting.state;
 import com.bitshifting.Main;
 import com.bitshifting.managers.StateManager;
 
-/**
- * Created by jdallman2570 on 2/23/2015.
- */
 public abstract class State {
     protected StateManager sm;
     protected Main game;
