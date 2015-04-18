@@ -8,8 +8,8 @@ public abstract class GameObject {
     public Vector2 position;
     public Vector2 velocity;
 
-    Texture texture;
-    float rotation;
+    public Texture texture;
+    public float rotation;
 
 
     public GameObject(Vector2 position)   {
