@@ -12,8 +12,8 @@ public class PowerUpObject extends GameObject {
     public int timeToLive; // The amount of time this power up exists before it must be deleted
     boolean valid; // Set to false when it should be deleted
 
-    public PowerUpObject(Vector2 position, Vector2 boundingBox, ProjectileType type){
-        super(position, boundingBox);
+    public PowerUpObject(Vector2 position, ProjectileType type){
+        super(position, "tito.png");
         this.type = type;
         this.valid = true;
     }

@@ -1,7 +1,10 @@
 package com.bitshifting.entities;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.bitshifting.state.MainGame;
 
 /**
  * Created by Sam on 4/18/2015.
@@ -13,17 +16,26 @@ public class ProjectileObject extends GameObject {
     public int damageAmount; // base damage amount before modifiers
     public int playerID; // the ID of the player that fired it (just in case we need it)
 
-    public ProjectileObject(Vector2 position, Vector2 boundingBox, ProjectileType type, int playerID) {
-        super(position, boundingBox);
+    public ProjectileObject(Vector2 position, ProjectileType type, int playerID, String img) {
+        super(position, img);
         this.type = type;
         this.damageAmount = 100;
         this.playerID = playerID;
+        this.rotation = 0.f;
     }
 
     @Override
     public void update(float dt) {
-        this.position.x = this.velocity.x * dt;
-        this.position.y = this.velocity.y * dt;
+        this.position.x += dt * this.velocity.x * MainGame.VELOCITY_MOD;
+        this.position.y += dt * this.velocity.y * MainGame.VELOCITY_MOD;
+        this.rotation += dt * 360.f;
+
+        while(this.rotation > 360.f) {
+            this.rotation -= 360.f;
+        }
+
+        this.sprite.setPosition(this.position.x, this.position.y);
+        this.sprite.setRotation(this.rotation);
     }
 
     @Override
@@ -33,7 +45,7 @@ public class ProjectileObject extends GameObject {
 
     @Override
     public void render(SpriteBatch batch) {
-        batch.draw(this.texture, this.position.x, this.position.y);
+        this.sprite.draw(batch);
     }
 
     @Override

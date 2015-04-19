@@ -2,6 +2,7 @@ package com.bitshifting.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
@@ -10,20 +11,20 @@ public abstract class GameObject {
     public Vector2 lastPosition;
     public boolean bouncing = false;
 
-    public Vector2 boundingBox;
-
     public Vector2 velocity;
 
     public Texture texture;
     public float rotation;
+    public Sprite sprite;
 
 
-    public GameObject(Vector2 position, Vector2 boundingBox)   {
+    public GameObject(Vector2 position, String textureName)   {
         this.position = position;
         this.lastPosition = new Vector2(position.x, position.y);
-        this.boundingBox = boundingBox;
-        this.texture = new Texture("tito.png");
+        this.texture = new Texture(textureName);
+        this.sprite = new Sprite(this.texture);
         this.rotation = 0.0f;
+        this.sprite.setPosition(this.position.x, this.position.y);
     }
 
     public abstract void update(float dt);
@@ -36,6 +37,6 @@ public abstract class GameObject {
         Vector2 a = this.position;
         Vector2 b = p.position;
 
-        return (Math.abs(a.x - b.x) * 2 < (this.boundingBox.x + p.boundingBox.x)) && (Math.abs(a.y - b.y) * 2 < (this.boundingBox.y + p.boundingBox.y));
+        return false;
     }
 }

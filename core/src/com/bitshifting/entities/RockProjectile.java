@@ -7,8 +7,7 @@ import com.badlogic.gdx.math.Vector2;
  * Created by ricardolopez on 4/18/15.
  */
 public class RockProjectile extends ProjectileObject {
-    public RockProjectile(Vector2 position, Vector2 boundingBox, ProjectileType type, int playerID) {
-        super(position, boundingBox, ProjectileType.ROCK, playerID);
-        this.texture = new Texture("weapons/rock.png");
+    public RockProjectile(Vector2 position, ProjectileType type, int playerID) {
+        super(position, ProjectileType.ROCK, playerID, "weapons/rock.png");
     }
 }
