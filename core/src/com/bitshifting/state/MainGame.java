@@ -312,7 +312,6 @@ public class MainGame extends State{
                 if ((j.playerID == 1 && p == player1) || (j.playerID == 2 && p ==player2)) {
                     // don't shoot yourself
                 } else {
-                    p.decrementHealth(50);
                     groanSound.play();
                     if (p.getRekt()) {
                         // player is rekt
