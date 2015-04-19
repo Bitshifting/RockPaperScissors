@@ -1,5 +1,6 @@
 package com.bitshifting.entities;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -24,8 +25,8 @@ public class WallObject extends GameObject{
     }
 
     @Override
-    public void render() {
-
+    public void render(SpriteBatch batch) {
+        batch.draw(this.texture, this.position.x, this.position.y);
     }
 
     @Override

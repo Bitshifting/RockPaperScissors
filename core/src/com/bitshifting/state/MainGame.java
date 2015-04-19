@@ -108,7 +108,7 @@ public class MainGame extends State{
         batch.begin();
 
         for (GameObject entity : entities){
-            batch.draw(entity.texture, entity.position.x, entity.position.y);
+            entity.render(batch);
         }
 
         batch.end();

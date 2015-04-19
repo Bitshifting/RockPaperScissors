@@ -2,6 +2,7 @@ package com.bitshifting.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 public abstract class GameObject {
@@ -27,7 +28,7 @@ public abstract class GameObject {
 
     public abstract void update(float dt);
     public abstract void handleInput();
-    public abstract void render();
+    public abstract void render(SpriteBatch batch);
     public abstract void dispose();
 
 
