@@ -65,6 +65,7 @@ public class InputManager implements InputProcessor {
         return instance;
     }
 
+
     @Override
     public boolean keyDown(int keycode) {
         if (player1Keyboard) {
@@ -91,12 +92,12 @@ public class InputManager implements InputProcessor {
                     break;
                 case Input.Keys.UP:
                     // Arrow up sets Y to -1.0
-                    player1RightStick.y += -1.0f;
+                    player1RightStick.y += 1.0f;
                     player1DUp = true;
                     break;
                 case Input.Keys.DOWN:
                     // Arrow down sets Y to 1.0
-                    player1RightStick.y += 1.0f;
+                    player1RightStick.y += -1.0f;
                     player1DDown = true;
                     break;
                 case Input.Keys.LEFT:
@@ -171,12 +172,12 @@ public class InputManager implements InputProcessor {
                     break;
                 case Input.Keys.UP:
                     // Arrow up sets Y to -1.0
-                    player1RightStick.y -= -1.0f;
+                    player1RightStick.y -= 1.0f;
                     player1DUp = false;
                     break;
                 case Input.Keys.DOWN:
                     // Arrow down sets Y to 1.0
-                    player1RightStick.y -= 1.0f;
+                    player1RightStick.y -= -1.0f;
                     player1DDown = false;
                     break;
                 case Input.Keys.LEFT:

@@ -44,7 +44,7 @@ public class ChooseState extends State {
     public ChooseState(StateManager sm) {
         super(sm);
         batch = new SpriteBatch();
-
+        Gdx.input.setInputProcessor(InputManager.getInstance());
         player1Pressed = false;
         player2Pressed = false;
 

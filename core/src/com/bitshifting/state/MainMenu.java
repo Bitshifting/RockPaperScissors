@@ -64,6 +64,9 @@ public class MainMenu extends State {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("Rules Clicked.");
+                //push on rules state
+                sm.setState(StateManager.RULES_STATE);
+
             }
         });
 
@@ -161,6 +164,6 @@ public class MainMenu extends State {
     }
 
     public void dispose() {
-
+        stage.dispose();
     }
 }
