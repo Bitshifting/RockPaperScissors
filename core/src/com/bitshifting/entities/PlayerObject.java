@@ -241,10 +241,10 @@ public class PlayerObject extends GameObject {
             this.position.x = 0;
         if (this.position.y < 0)
             this.position.y = 0;
-        if (this.position.y + this.sprite.getHeight() > Gdx.graphics.getHeight())
-            this.position.y = Gdx.graphics.getHeight() - this.sprite.getHeight();
-        if (this.position.x + this.sprite.getWidth() > Gdx.graphics.getWidth())
-            this.position.x = Gdx.graphics.getWidth() - this.sprite.getWidth();
+        if (this.position.y + this.sprite.getHeight() > MainGame.height)
+            this.position.y = MainGame.height - this.sprite.getHeight();
+        if (this.position.x + this.sprite.getWidth() > MainGame.width)
+            this.position.x = MainGame.width - this.sprite.getWidth();
 
         sprite.setPosition(this.position.x, this.position.y);
 

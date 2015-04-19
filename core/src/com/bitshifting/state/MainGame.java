@@ -28,6 +28,9 @@ public class MainGame extends State{
     HealthBar player1Health;
     HealthBar player2Health;
 
+    public static int width;
+    public static int height;
+
     public static final float VELOCITY_MOD = 100.0f; //change this to correctly adjust the velocity to a reasonable level
 
     public static final float BULLET_TIMER = 0.5f;
@@ -61,8 +64,8 @@ public class MainGame extends State{
 
     public MainGame(StateManager sm){
         super(sm);
-        float height = Gdx.graphics.getHeight();
-        float width = Gdx.graphics.getWidth();
+        height = Gdx.graphics.getHeight();
+        width = Gdx.graphics.getWidth();
         entities = new ArrayList<GameObject>(); // Initialize our game object list
         f = new Texture("arena/arena_floor.png");
         w = new Texture("arena/arena_walls.png");
