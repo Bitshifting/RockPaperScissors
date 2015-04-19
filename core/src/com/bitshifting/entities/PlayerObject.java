@@ -29,6 +29,8 @@ public class PlayerObject extends GameObject {
     private Texture[] bodySide;
     private Texture[] bodyUp;
 
+    boolean flipped = false;
+
     public PlayerObject(Vector2 position, int id, ProjectileType currentType) {
         super(position, "tito.png");
         this.playerID = id;
@@ -69,7 +71,7 @@ public class PlayerObject extends GameObject {
         }
 
         cycle = STANDING;
-        sideStand();
+        sideStand(id == PLAYER_2);
 
         sprite.setSize(sprite.getWidth() * 0.5f, sprite.getHeight() * 0.5f);
         sprite.setPosition(position.x, position.y);
@@ -151,9 +153,9 @@ public class PlayerObject extends GameObject {
         //use x direction
         else if(Math.abs(this.velocity.x) > Math.abs(this.velocity.y)) {
             if(this.velocity.x < -thresholdVelocity) {
-                sideRun();
+                sideRun(true);
             } else if(this.velocity.x > thresholdVelocity) {
-                sideRun();
+                sideRun(false);
             } else {
                 callStand();
             }
@@ -207,7 +209,7 @@ public class PlayerObject extends GameObject {
                 downStand();
                 break;
             case SIDE:
-                sideStand();
+                sideStand(flipped);
                 break;
         }
     }
@@ -236,13 +238,15 @@ public class PlayerObject extends GameObject {
         lastDirection = UP;
     }
 
-    private void sideStand() {
+    private void sideStand(boolean flip) {
+        sprite.setFlip(flip, false);
         sprite.setTexture(bodySide[STANDING]);
         cycle = STANDING;
         lastDirection = SIDE;
     }
 
-    private void sideRun() {
+    private void sideRun(boolean flip) {
+        sprite.setFlip(flip, false);
         sprite.setTexture(bodySide[cycle]);
         cycle = (cycle + 1) % 3;
         lastDirection = SIDE;
