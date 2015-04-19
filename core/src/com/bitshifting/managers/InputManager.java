@@ -91,12 +91,12 @@ public class InputManager implements InputProcessor {
                     break;
                 case Input.Keys.UP:
                     // Arrow up sets Y to -1.0
-                    player1RightStick.y += 1.0f;
+                    player1RightStick.y += -1.0f;
                     player1DUp = true;
                     break;
                 case Input.Keys.DOWN:
                     // Arrow down sets Y to 1.0
-                    player1RightStick.y += -1.0f;
+                    player1RightStick.y += 1.0f;
                     player1DDown = true;
                     break;
                 case Input.Keys.LEFT:
@@ -171,12 +171,12 @@ public class InputManager implements InputProcessor {
                     break;
                 case Input.Keys.UP:
                     // Arrow up sets Y to -1.0
-                    player1RightStick.y -= 1.0f;
+                    player1RightStick.y -= -1.0f;
                     player1DUp = false;
                     break;
                 case Input.Keys.DOWN:
                     // Arrow down sets Y to 1.0
-                    player1RightStick.y -= -1.0f;
+                    player1RightStick.y -= 1.0f;
                     player1DDown = false;
                     break;
                 case Input.Keys.LEFT:
@@ -300,32 +300,32 @@ public class InputManager implements InputProcessor {
         public boolean axisMoved(Controller controller, int axisCode, float value) {
             if (!player1Keyboard) {
                 if (controller == player1) {
-                    if (axisCode == 1) {
+                    if (axisCode == ControllerButtons.getLeftY(controller.getName())) {
                         // Left stick Y
                         player1LeftStick.y = -value;
-                    } else if (axisCode == 0) {
+                    } else if (axisCode == ControllerButtons.getLeftX(controller.getName())) {
                         // Left stick X
                         player1LeftStick.x = value;
-                    } else if (axisCode == 2) {
+                    } else if (axisCode == ControllerButtons.getRightY(controller.getName())) {
                         // Right stick Y
                         player1RightStick.y = -value;
-                    } else if (axisCode == 3) {
+                    } else if (axisCode == ControllerButtons.getRightX(controller.getName())) {
                         // Right stick X
                         player1RightStick.x = value;
                     }
                 }
             }
             if (controller == player2) {
-                if (axisCode == 1) {
+                if (axisCode == ControllerButtons.getLeftY(controller.getName())) {
                     // Left stick Y
                     player2LeftStick.y = -value;
-                } else if (axisCode == 0) {
+                } else if (axisCode == ControllerButtons.getLeftX(controller.getName())) {
                     // Left stick X
                     player2LeftStick.x = value;
-                } else if (axisCode == 2) {
+                } else if (axisCode == ControllerButtons.getRightY(controller.getName())) {
                     // Right stick Y
                     player2RightStick.y = -value;
-                } else if (axisCode == 3) {
+                } else if (axisCode == ControllerButtons.getRightX(controller.getName())) {
                     // Right stick X
                     player2RightStick.x = value;
                 }

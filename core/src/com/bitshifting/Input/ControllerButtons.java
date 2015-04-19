@@ -1,13 +1,14 @@
 package com.bitshifting.Input;
 
 import com.badlogic.gdx.controllers.PovDirection;
+import com.sun.org.apache.xpath.internal.objects.XBoolean;
 
 /**
  * Created by Sam on 4/18/2015.
  */
 public class ControllerButtons {
     // XBox 360 controller
-    public static final String XboxName = "Controller (XBOX 360 For Windows)";
+    public static final String XboxName = "XBOX";
     // Buttons
     public static final int XboxA = 0;
     public static final int XboxB = 1;
@@ -49,8 +50,8 @@ public class ControllerButtons {
     public static final int P880Start = 10;
 
     //Analog sticks
-    public static final int P880LSY = 0;
-    public static final int P880LSX = 1;
+    public static final int P880LSY = 1;
+    public static final int P880LSX = 0;
     public static final int P880RSY = 2;
     public static final int P880RSX = 3;
 
@@ -94,6 +95,42 @@ public class ControllerButtons {
             return P880Start;
         }
         return 7;
+    }
+
+    public static int getLeftY(String name){
+        if (name.contains(XboxName)){
+            return XboxLSY;
+        }else if (name.contains(P880Name)){
+            return P880LSY;
+        }
+        return 0;
+    }
+
+    public static int getLeftX(String name){
+        if (name.contains(XboxName)){
+            return XboxLSX;
+        }else if (name.contains(P880Name)){
+            return P880LSX;
+        }
+        return 0;
+    }
+
+    public static int getRightY(String name){
+        if (name.contains(XboxName)){
+            return XboxRSY;
+        }else if (name.contains(P880Name)){
+            return P880RSY;
+        }
+        return 0;
+    }
+
+    public static int getRightX(String name){
+        if (name.contains(XboxName)){
+            return XboxRSX;
+        }else if (name.contains(P880Name)){
+            return P880RSX;
+        }
+        return 0;
     }
 
 }
