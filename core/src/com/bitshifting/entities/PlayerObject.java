@@ -1,6 +1,7 @@
 package com.bitshifting.entities;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -37,6 +38,7 @@ public class PlayerObject extends GameObject {
 
     boolean flipped = false;
     public HealthBar mHealth;
+    Sound gunshotSound = Gdx.audio.newSound((Gdx.files.internal("sounds/gunshot.wav")));
 
     Vector2 posOfBazook;
 
@@ -187,33 +189,7 @@ public class PlayerObject extends GameObject {
         }
 
         projectile.velocity = newDirection;
-
-        float thresholdVelocity = 0.2f;
-
-        //use x direction
-        if(Math.abs(projectile.velocity.x) > Math.abs(projectile.velocity.y)) {
-            if(projectile.velocity.x < -thresholdVelocity) {
-                sideRun(true);
-            } else if(projectile.velocity.x > thresholdVelocity) {
-                sideRun(false);
-            }
-        }
-
-        //use y direction
-        else if(Math.abs(projectile.velocity.y) > Math.abs(projectile.velocity.x)) {
-            if(projectile.velocity.y < -thresholdVelocity) {
-                downRun();
-            } else if(projectile.velocity.y > thresholdVelocity) {
-                upRun();
-            }
-        } else {
-            if(projectile.velocity.y < -thresholdVelocity) {
-                downRun();
-            } else if(projectile.velocity.y > thresholdVelocity) {
-                upRun();
-            }
-        }
-
+        gunshotSound.play();
         return projectile;
     }
 
@@ -223,15 +199,39 @@ public class PlayerObject extends GameObject {
         this.position.x += dt * this.velocity.x * MainGame.VELOCITY_MOD;
         this.position.y += dt * this.velocity.y * MainGame.VELOCITY_MOD;
 
+        float thresholdVelocity = 0.2f;
+
         if (Math.abs(this.velocity.x) < 0.001f && Math.abs(this.velocity.y) < 0.001f) {
             callStand();
-        } else {
-            if(lastDirection == UP) {
-                upRun();
-            } else if(lastDirection == SIDE) {
-                sideRun(flipped);
+        }
+
+        //use x direction
+        else if(Math.abs(this.velocity.x) > Math.abs(this.velocity.y)) {
+            if(this.velocity.x < -thresholdVelocity) {
+                sideRun(true);
+            } else if(this.velocity.x > thresholdVelocity) {
+                sideRun(false);
             } else {
+                callStand();
+            }
+        }
+
+        //use y direction
+        else if(Math.abs(this.velocity.y) > Math.abs(this.velocity.x)) {
+            if(this.velocity.y < -thresholdVelocity) {
                 downRun();
+            } else if(this.velocity.y > thresholdVelocity) {
+                upRun();
+            } else {
+                callStand();
+            }
+        } else {
+            if(this.velocity.y < -thresholdVelocity) {
+                downRun();
+            } else if(this.velocity.y > thresholdVelocity) {
+                upRun();
+            } else {
+                callStand();
             }
         }
 
