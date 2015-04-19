@@ -22,7 +22,8 @@ public class ProjectileObject extends GameObject {
 
     @Override
     public void update(float dt) {
-
+        this.position.x = this.velocity.x * dt;
+        this.position.y = this.velocity.y * dt;
     }
 
     @Override
