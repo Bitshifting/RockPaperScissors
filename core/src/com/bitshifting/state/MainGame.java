@@ -313,7 +313,8 @@ public class MainGame extends State{
                 // Change the type of the player to the powerup
                 PlayerObject p = (PlayerObject) (c.collider1 instanceof  PlayerObject? c.collider1: c.collider2);
                  PowerUpObject j = (PowerUpObject)(c.collider1 instanceof  PowerUpObject? c.collider1: c.collider2);
-                p.currentType = j.type;
+                //p.currentType = j.type;
+                p.changeProjectile(j.type);
                 entities.remove(j);
             }
 
