@@ -75,38 +75,38 @@ public class InputManager implements InputProcessor {
                     break;
                 case Input.Keys.W:
                     // W sets Y to -1.0
-                    player1LeftStick.y = -1.0f;
+                    player1LeftStick.y += 1.0f;
                     break;
                 case Input.Keys.S:
                     // S sets Y to 1.0
-                    player1LeftStick.y = 1.0f;
+                    player1LeftStick.y += -1.0f;
                     break;
                 case Input.Keys.A:
                     // A sets X to -1.0
-                    player1LeftStick.x = -1.0f;
+                    player1LeftStick.x += -1.0f;
                     break;
                 case Input.Keys.D:
                     // D sets X to 1.0
-                    player1LeftStick.x = 1.0f;
+                    player1LeftStick.x += 1.0f;
                     break;
                 case Input.Keys.UP:
                     // Arrow up sets Y to -1.0
-                    player1RightStick.y = -1.0f;
+                    player1RightStick.y += -1.0f;
                     player1DUp = true;
                     break;
                 case Input.Keys.DOWN:
                     // Arrow down sets Y to 1.0
-                    player1RightStick.y = 1.0f;
+                    player1RightStick.y += 1.0f;
                     player1DDown = true;
                     break;
                 case Input.Keys.LEFT:
                     // Arrow left sets X to -1.0, left to true
-                    player1RightStick.x = -1.0f;
+                    player1RightStick.x += -1.0f;
                     player1DLeft = true;
                     break;
                 case Input.Keys.RIGHT:
                     // Arrow right sets X to 1.0, right to true
-                    player1RightStick.x = 1.0f;
+                    player1RightStick.x += 1.0f;
                     player1DRight = true;
                     break;
                 case Input.Keys.ENTER:
@@ -124,11 +124,70 @@ public class InputManager implements InputProcessor {
             }
 
         }
+
         return false;
     }
 
     @Override
     public boolean keyUp(int keycode) {
+        if (player1Keyboard) {
+            switch (keycode) {
+                case Input.Keys.ESCAPE:
+                    // Escape sets start to true
+                    player1Start = false;
+                    break;
+                case Input.Keys.W:
+                    // W sets Y to -1.0
+                    player1LeftStick.y -= 1.0f;
+                    break;
+                case Input.Keys.S:
+                    // S sets Y to 1.0
+                    player1LeftStick.y -= -1.0f;
+                    break;
+                case Input.Keys.A:
+                    // A sets X to -1.0
+                    player1LeftStick.x -= -1.0f;
+                    break;
+                case Input.Keys.D:
+                    // D sets X to 1.0
+                    player1LeftStick.x -= 1.0f;
+                    break;
+                case Input.Keys.UP:
+                    // Arrow up sets Y to -1.0
+                    player1RightStick.y -= -1.0f;
+                    player1DUp = false;
+                    break;
+                case Input.Keys.DOWN:
+                    // Arrow down sets Y to 1.0
+                    player1RightStick.y -= 1.0f;
+                    player1DDown = false;
+                    break;
+                case Input.Keys.LEFT:
+                    // Arrow left sets X to -1.0, left to true
+                    player1RightStick.x -= -1.0f;
+                    player1DLeft = false;
+                    break;
+                case Input.Keys.RIGHT:
+                    // Arrow right sets X to 1.0, right to true
+                    player1RightStick.x -= 1.0f;
+                    player1DRight = false;
+                    break;
+                case Input.Keys.ENTER:
+                    // Enter sets a to true
+                    player1A = false;
+                    break;
+                case Input.Keys.BACKSPACE:
+                    // Backspace sets b to true
+                    player1B = false;
+                    break;
+                case Input.Keys.BACKSLASH:
+                    // Backslash set x to true
+                    player1X = false;
+                    break;
+            }
+
+        }
+
         return false;
     }
 
@@ -219,32 +278,32 @@ public class InputManager implements InputProcessor {
         public boolean axisMoved(Controller controller, int axisCode, float value) {
             if (!player1Keyboard) {
                 if (controller == player1) {
-                    if (axisCode == 0) {
+                    if (axisCode == 1) {
                         // Left stick Y
-                        player1LeftStick.y = value;
-                    } else if (axisCode == 1) {
+                        player1LeftStick.y = -value;
+                    } else if (axisCode == 0) {
                         // Left stick X
                         player1LeftStick.x = value;
-                    } else if (axisCode == 2) {
-                        // Right stick Y
-                        player1RightStick.y = value;
                     } else if (axisCode == 3) {
+                        // Right stick Y
+                        player1RightStick.y = -value;
+                    } else if (axisCode == 2) {
                         // Right stick X
                         player1RightStick.x = value;
                     }
                 }
             }
             if (controller == player2) {
-                if (axisCode == 0) {
+                if (axisCode == 1) {
                     // Left stick Y
-                    player2LeftStick.y = value;
-                } else if (axisCode == 1) {
+                    player2LeftStick.y = -value;
+                } else if (axisCode == 0) {
                     // Left stick X
                     player2LeftStick.x = value;
-                } else if (axisCode == 2) {
-                    // Right stick Y
-                    player2RightStick.y = value;
                 } else if (axisCode == 3) {
+                    // Right stick Y
+                    player2RightStick.y = -value;
+                } else if (axisCode == 2) {
                     // Right stick X
                     player2RightStick.x = value;
                 }
