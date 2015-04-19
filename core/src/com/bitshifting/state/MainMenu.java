@@ -148,7 +148,7 @@ public class MainMenu extends State {
         stage.addActor(fistsImage);
         stage.addActor(exitButton);
         stage.addActor(shootButton);
-        stage.addActor(settingsButton);
+        //stage.addActor(settingsButton);
         stage.addActor(rulesButton);
     }
 
