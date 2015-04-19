@@ -66,14 +66,12 @@ public class ChooseState extends State {
         float centeredHeight = ((float)Gdx.graphics.getHeight() / 3.f) - (widthOfReadyBox / 2.f);
         float marginOfReadyBox = (float)Gdx.graphics.getWidth() / 40.f;
         Vector2 sizeOfBox = new Vector2((float)Gdx.graphics.getWidth() / 5.f, (float)Gdx.graphics.getWidth() / 5.f);
-        float resize = 0.1f;
 
         p1RdyBoxPos = new Vector2(marginOfReadyBox, centeredHeight);
         p2RdyBoxPos = new Vector2((float)Gdx.graphics.getWidth() - marginOfReadyBox, centeredHeight);
 
         p1RdySprite = new Sprite(readyBox);
         p1RdySprite.setSize(sizeOfBox.x, sizeOfBox.y);
-        p1RdySprite.setScale(resize);
         p1RdySprite.setPosition(p1RdyBoxPos.x, p1RdyBoxPos.y);
 
         p1NRdySprite = new Sprite(notReadyBox);
