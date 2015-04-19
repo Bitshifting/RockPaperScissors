@@ -11,6 +11,7 @@ import com.bitshifting.managers.InputManager;
 import com.bitshifting.managers.StateManager;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -23,6 +24,8 @@ public class MainGame extends State{
     PlayerObject player2;
     public static final float VELOCITY_MOD = 100.0f; //change this to correctly adjust the velocity to a reasonable level
 
+    public static final float BULLET_TIMER = 0.5f;
+
     SpriteBatch batch; // Our sprite batch for rendering
     List<GameObject> entities; // the list of game entities
 
@@ -32,6 +35,21 @@ public class MainGame extends State{
     Texture w;
     Texture f;
     InputManager inputs; // The manager for the inputs
+
+    //set a time for the first time
+    private boolean isFirstTime = true;
+    private float timerStart = 0;
+    private Sprite timerSprite;
+
+    private Texture threeTex;
+    private Texture twoTex;
+    private Texture oneTex;
+    private Texture goTex;
+
+    float p1Shoot = 0.f;
+    boolean p1Bullet = false;
+    float p2Shoot = 0.f;
+    boolean p2Bullet = false;
 
     public MainGame(StateManager sm){
         super(sm);
@@ -51,31 +69,29 @@ public class MainGame extends State{
         walls.setSize(width, height);
 
         batch = new SpriteBatch();
+
+        threeTex = new Texture("loadingscreen/three.png");
+        twoTex = new Texture("loadingscreen/two.png");
+        oneTex = new Texture("loadingscreen/one.png");
+        goTex = new Texture("loadingscreen/go.png");
+
+        timerSprite = new Sprite(threeTex);
+        timerSprite.setSize(timerSprite.getWidth() * 0.4f, timerSprite.getHeight() * 0.4f);
+        timerSprite.setCenter((float)Gdx.graphics.getWidth() / 2.f, (float) Gdx.graphics.getHeight() / 2.f);
     }
 
     @Override
     public void handleInput() {
+
+        if(isFirstTime) {
+            return;
+        }
+
         InputManager manager = InputManager.getInstance();
         // We want to only handle inputs that would alter the game state (pause, fire, movement keys)
         // See if the pause key is pressed
         if (manager.getPlayerStart(1) || manager.getPlayerStart(2)){
             //Pause the game
-        }
-        // See if either fire key is pressed and handle accordingly
-        // First get player 1's joystick input
-        Vector2 player1Fire = manager.player1RightStick;
-        Vector2 player2Fire = manager.player2RightStick;
-        // Now see if these are over a threshold (.5 or something)
-
-        if (player1Fire.len() > 0.5f) {
-            System.out.println("Player 1 Fire");
-            ProjectileObject newBullet = player1.fire(player1Fire);
-            entities.add(newBullet);
-        }
-        if (player2Fire.len() > 0.5f){
-            System.out.println("Player 2 Fire");
-            ProjectileObject newBullet = player2.fire(player2Fire);
-            entities.add(newBullet);
         }
 
         // Now look at the left stick and assign player velocities
@@ -92,6 +108,72 @@ public class MainGame extends State{
 
     @Override
     public void update(float dt) {
+
+
+        if(isFirstTime) {
+            timerStart += dt;
+
+            if(timerStart > 4.f) {
+                isFirstTime = false;
+            } else if(timerStart > 3.f) {
+                timerSprite.setTexture(goTex);
+            } else if(timerStart > 2.f) {
+                timerSprite.setTexture(oneTex);
+            } else if (timerStart > 1.f) {
+                timerSprite.setTexture(twoTex);
+            }
+
+            return;
+        }
+
+        if(p1Bullet) {
+            p1Shoot += dt;
+
+            if(p1Shoot > BULLET_TIMER) {
+                p1Shoot = 0.f;
+                p1Bullet = false;
+            }
+        }
+
+        if(p2Bullet) {
+            p2Shoot += dt;
+
+            if(p2Shoot > BULLET_TIMER) {
+                p2Shoot = 0.f;
+                p2Bullet = false;
+            }
+        }
+
+        // See if either fire key is pressed and handle accordingly
+        // First get player 1's joystick input
+        Vector2 player1Fire = InputManager.getInstance().player1RightStick;
+        Vector2 player2Fire = InputManager.getInstance().player2RightStick;
+        // Now see if these are over a threshold (.5 or something)
+
+        if ((player1Fire.len() > 0.5f) && !p1Bullet) {
+            ProjectileObject newBullet = player1.fire(player1Fire);
+            if(newBullet != null) {
+                entities.add(newBullet);
+                p1Bullet = true;
+            }
+        }
+        if ((player2Fire.len() > 0.5f) && !p2Bullet){
+            ProjectileObject newBullet = player2.fire(player2Fire);
+            if(newBullet != null) {
+                entities.add(newBullet);
+                p2Bullet = true;
+            }
+        }
+
+        // add random drops
+        if (Math.random() < 0.01) {
+            // Spawn new random drop
+            ProjectileType type = Math.random() < 0.33 ? ProjectileType.PAPER : Math.random() < 0.5 ? ProjectileType.ROCK : ProjectileType.SCISSOR;
+         //   entities.add (new PowerUpObject(new Vector2((float)(Math.random() * Gdx.graphics.getWidth()), (float)(Math.random() * Gdx.graphics.getHeight())
+         //   ), type));
+        }
+        
+
         // Run update on all the entities
         for (GameObject o : entities) {
             o.update(dt);
@@ -101,124 +183,158 @@ public class MainGame extends State{
 
         // Now that everything is updated, check new positions for conflicts in the bounding boxes, and if there are
         // conflicts, move back the entities to their previous position.
-//        for (GameObject o : entities) {
-//            // Check this entity against every other entity (o(n^2) heck yeah) and see if it collides. if it does, mark
-//            // both entities as bouncing.
-//            for (GameObject p : entities) {
-//                if (o.collidesWith(p)) {
-//                    o.bouncing = true;
-//                    p.bouncing = true;
-//                    collisionEvents.add(new CollisionEvent(o, p));
-//                }
-//            }
-//        }
-//
-//        // Check for bounces and restore their previous positions.
-//        for (GameObject o : entities) {
-//            if (o.bouncing) {
-//                o.position = o.lastPosition;
-//            }
-//        }
-//
-//        for (CollisionEvent c : collisionEvents) {
-//
-//            if (c.collider1 instanceof ProjectileObject && c.collider2 instanceof ProjectileObject) {
-//                // Resolve which one is better and kill the inferior object; in a tie, kill both
-//                ProjectileObject p1 = (ProjectileObject)c.collider1;
-//                ProjectileObject p2 = (ProjectileObject)c.collider2;
-//
-//                int winner = 0; // if 1, it's p1, if 2, it's p2, 0 = tie
-//
-//                // Switch on the other projectile
-//                switch (p1.type) {
-//                    case PAPER:
-//                        switch (p2.type) {
-//                            case PAPER:
-//                                winner = 0;
-//                                break;
-//                            case ROCK:
-//                                winner = 1;
-//                                break;
-//                            case SCISSOR:
-//                                winner = 2;
-//                                break;
-//                        }
-//                        break;
-//                    case ROCK:
-//                        switch (p2.type) {
-//                            case PAPER:
-//                                winner = 2;
-//                                break;
-//                            case ROCK:
-//                                winner = 0;
-//                                break;
-//                            case SCISSOR:
-//                                winner = 1;
-//                                break;
-//                        }
-//                        break;
-//                    case SCISSOR:
-//                        switch (p2.type) {
-//                            case PAPER:
-//                                winner = 1;
-//                                break;
-//                            case ROCK:
-//                                winner = 2;
-//                                break;
-//                            case SCISSOR:
-//                                winner = 0;
-//                                break;
-//                        }
-//                        break;
-//                }
-//
-//                switch (winner) {
-//                    case 0:
-//                        entities.remove(p1);
-//                        entities.remove(p2);
-//                        break;
-//                    case 1:
-//                        entities.remove(p2);
-//                        break;
-//                    case 2:
-//                        entities.remove(p1);
-//                        break;
-//                }
-//            }
-//
-//
-//            // Player v projectile collision
-//            if ((c.collider1 instanceof PlayerObject && c.collider2 instanceof ProjectileObject) ||
-//                    (c.collider1 instanceof ProjectileObject && c.collider2 instanceof PlayerObject)) {
-//                PlayerObject p = (PlayerObject) (c.collider1 instanceof PlayerObject ? c.collider1 : c.collider2);
-//                ProjectileObject j = (ProjectileObject) (c.collider1 instanceof  ProjectileObject ? c.collider1 : c.collider2);
-//
-//                p.health -= 50;
-//
-//                // remove the projectile
-//                entities.remove(j);
-//            }
-//
-//            // projectile vs wall collision - remove the projectile
-//            if ((c.collider1 instanceof ProjectileObject && c.collider2 instanceof WallObject )  ||
-//                    (c.collider1 instanceof ProjectileObject && c.collider2 instanceof WallObject)) {
-//                ProjectileObject p = (ProjectileObject) (c.collider1 instanceof  ProjectileObject ? c.collider1 : c.collider2);
-//
-//                entities.remove(p);
-//            }
-//
-//
-//            // Player vs powerup - pick up the powerup!
-//            if ((c.collider1 instanceof PowerUpObject && c.collider2 instanceof PlayerObject) ||
-//                    (c.collider1 instanceof PlayerObject && c.collider2 instanceof PowerUpObject)) {
-//                // Change the type of the player to the powerup
-//                PlayerObject p = (PlayerObject) (c.collider1 instanceof  PowerUpObject? c.collider1: c.collider2);
-//                ProjectileObject j = (ProjectileObject)(c.collider1 instanceof  PowerUpObject? c.collider2: c.collider1);
-//                p.currentType = j.type;
-//                entities.remove(j);
-//            }
-//
-//        }
+        for (GameObject o : entities) {
+            // Check this entity against every other entity (o(n^2) heck yeah) and see if it collides. if it does, mark
+            // both entities as bouncing.
+            for (GameObject p : entities) {
+                if (o == p) {
+                    continue;
+                }
+
+
+                if (o.collidesWith(p)) {
+                    o.bouncing = true;
+                    p.bouncing = true;
+                    collisionEvents.add(new CollisionEvent(o, p));
+                }
+            }
+        }
+
+        // Check for bounces and restore their previous positions.
+        for (GameObject o : entities) {
+            if (o.bouncing) {
+                o.position = o.lastPosition;
+            }
+        }
+
+        for (CollisionEvent c : collisionEvents) {
+
+            if (c.collider1 instanceof ProjectileObject && c.collider2 instanceof ProjectileObject) {
+
+                // Resolve which one is better and kill the inferior object; in a tie, kill both
+                ProjectileObject p1 = (ProjectileObject)c.collider1;
+                ProjectileObject p2 = (ProjectileObject)c.collider2;
+
+                // Don't if they came from the same source
+                if (p1.playerID == p2.playerID)
+                    continue;
+
+                int winner = 0; // if 1, it's p1, if 2, it's p2, 0 = tie
+
+                // Switch on the other projectile
+                switch (p1.type) {
+                    case PAPER:
+                        switch (p2.type) {
+                            case PAPER:
+                                winner = 0;
+                                break;
+                            case ROCK:
+                                winner = 1;
+                                break;
+                            case SCISSOR:
+                                winner = 2;
+                                break;
+                        }
+                        break;
+                    case ROCK:
+                        switch (p2.type) {
+                            case PAPER:
+                                winner = 2;
+                                break;
+                            case ROCK:
+                                winner = 0;
+                                break;
+                            case SCISSOR:
+                                winner = 1;
+                                break;
+                        }
+                        break;
+                    case SCISSOR:
+                        switch (p2.type) {
+                            case PAPER:
+                                winner = 1;
+                                break;
+                            case ROCK:
+                                winner = 2;
+                                break;
+                            case SCISSOR:
+                                winner = 0;
+                                break;
+                        }
+                        break;
+                }
+
+                switch (winner) {
+                    case 0:
+                        entities.remove(p1);
+                        entities.remove(p2);
+                        break;
+                    case 1:
+                        entities.remove(p2);
+                        break;
+                    case 2:
+                        entities.remove(p1);
+                        break;
+                }
+            }
+
+
+            // Player v projectile collision
+            if ((c.collider1 instanceof PlayerObject && c.collider2 instanceof ProjectileObject) ||
+                    (c.collider1 instanceof ProjectileObject && c.collider2 instanceof PlayerObject)) {
+                PlayerObject p = (PlayerObject) (c.collider1 instanceof PlayerObject ? c.collider1 : c.collider2);
+                ProjectileObject j = (ProjectileObject) (c.collider1 instanceof  ProjectileObject ? c.collider1 : c.collider2);
+
+                if ((j.playerID == 1 && p == player1) || (j.playerID == 2 && p ==player2)) {
+                    // don't shoot yourself
+                } else {
+                    p.health -= 50;
+
+                    // remove the projectile
+                    entities.remove(j);
+                }
+            }
+
+            // projectile vs wall collision - remove the projectile
+            if ((c.collider1 instanceof ProjectileObject && c.collider2 instanceof WallObject )  ||
+                    (c.collider1 instanceof ProjectileObject && c.collider2 instanceof WallObject)) {
+                ProjectileObject p = (ProjectileObject) (c.collider1 instanceof  ProjectileObject ? c.collider1 : c.collider2);
+
+                entities.remove(p);
+            }
+
+
+            // Player vs powerup - pick up the powerup!
+            if ((c.collider1 instanceof PowerUpObject && c.collider2 instanceof PlayerObject) ||
+                    (c.collider1 instanceof PlayerObject && c.collider2 instanceof PowerUpObject)) {
+                // Change the type of the player to the powerup
+                PlayerObject p = (PlayerObject) (c.collider1 instanceof  PlayerObject? c.collider1: c.collider2);
+                 PowerUpObject j = (PowerUpObject)(c.collider1 instanceof  PowerUpObject? c.collider1: c.collider2);
+                p.currentType = j.type;
+                entities.remove(j);
+            }
+
+
+            // Powerup vs powerup - just remove one of them...
+            if ((c.collider1 instanceof PowerUpObject && c.collider2 instanceof PowerUpObject)) {
+                entities.remove(c.collider2);
+            }
+
+        }
+
+
+        // remove out of bounds projectiles
+        Iterator<GameObject> itr = entities.iterator();
+        while (itr.hasNext()) {
+            GameObject g = itr.next();
+            if (g instanceof ProjectileObject) {
+                ProjectileObject p = (ProjectileObject)g;
+                if (p.position.x < 0 || p.position.y < 0 || p.position.x > Gdx.graphics.getWidth() || p.position.y > Gdx.graphics.getHeight()) {
+                    itr.remove();
+                    System.out.println("removed oob projectile");
+                }
+            }
+        }
 
         // Determine if a player has died in the last update, if so, end the game or something
     }
@@ -234,6 +350,9 @@ public class MainGame extends State{
             entity.render(batch);
         }
 
+        if(isFirstTime) {
+            timerSprite.draw(batch);
+        }
 
         batch.end();
     }

@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public abstract class GameObject {
@@ -34,9 +36,8 @@ public abstract class GameObject {
 
 
     public boolean collidesWith(GameObject p) {
-        Vector2 a = this.position;
-        Vector2 b = p.position;
-
-        return false;
+        return Intersector.overlaps(
+                new Rectangle(position.x, position.y, sprite.getWidth(), sprite.getHeight()),
+                new Rectangle(p.position.x, p.position.y, p.sprite.getWidth(), p.sprite.getHeight()));
     }
 }
