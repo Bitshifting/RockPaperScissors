@@ -1,8 +1,7 @@
 package com.bitshifting.managers;
 
 import com.bitshifting.Main;
-import com.bitshifting.state.MainMenu;
-import com.bitshifting.state.State;
+import com.bitshifting.state.*;
 
 import java.util.Stack;
 
@@ -10,9 +9,12 @@ public class StateManager {
 
     //state imnts
     public static final int MAIN_MENU = 0;
+    public static final int CHOOSE_STATE = 1;
+    public static final int MAIN_GAME = 2;
+    public static final int RULES_STATE = 3;
 
     private Main game;
-    private Stack<State> stateStack;
+    public Stack<State> stateStack;
 
     //constructor
     public StateManager(Main main)
@@ -48,6 +50,12 @@ public class StateManager {
         //find the state to get
         if(state == MAIN_MENU) {
             return new MainMenu(this);
+        } else if(state == CHOOSE_STATE) {
+            return new ChooseState(this);
+        } else if(state == RULES_STATE) {
+            return new RulesState(this);
+        } else if(state == MAIN_GAME) {
+            return new MainGame(this);
         }
 
         return null;

@@ -22,7 +22,7 @@ public abstract class GameObject {
         this.position = position;
         this.lastPosition = new Vector2(position.x, position.y);
         this.boundingBox = boundingBox;
-        this.texture = new Texture(Gdx.files.internal("assets/tito.png"));
+        this.texture = new Texture("tito.png");
         this.rotation = 0.0f;
     }
 
