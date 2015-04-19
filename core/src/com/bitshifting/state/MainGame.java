@@ -150,13 +150,17 @@ public class MainGame extends State{
 
         if ((player1Fire.len() > 0.5f) && !p1Bullet) {
             ProjectileObject newBullet = player1.fire(player1Fire);
-            entities.add(newBullet);
-            p1Bullet = true;
+            if(newBullet != null) {
+                entities.add(newBullet);
+                p1Bullet = true;
+            }
         }
         if ((player2Fire.len() > 0.5f) && !p2Bullet){
             ProjectileObject newBullet = player2.fire(player2Fire);
-            entities.add(newBullet);
-            p2Bullet = true;
+            if(newBullet != null) {
+                entities.add(newBullet);
+                p2Bullet = true;
+            }
         }
 
         // Run update on all the entities

@@ -61,6 +61,10 @@ public class PlayerObject extends GameObject {
         //normalize the velocity
         newDirection.nor();
 
+        if(newDirection.len() < 0.5f) {
+            return null;
+        }
+
         ProjectileObject projectile;
 
         if(this.currentType == ProjectileType.ROCK) {
