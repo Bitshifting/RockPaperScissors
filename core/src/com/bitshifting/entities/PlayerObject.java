@@ -36,6 +36,7 @@ public class PlayerObject extends GameObject {
     Sprite bazookSprite;
 
     boolean flipped = false;
+    public HealthBar mHealth;
 
     Vector2 posOfBazook;
 
@@ -284,6 +285,11 @@ public class PlayerObject extends GameObject {
     @Override
     public void dispose() {
 
+    }
+
+    public void decrementHealth(int amt){
+        this.health -= amt;
+        this.mHealth.decrementHealth(amt);
     }
 
     private void callStand() {
