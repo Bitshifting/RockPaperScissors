@@ -46,6 +46,7 @@ public class MainGame extends State{
         for (GameObject o : entities) {
             o.lastPosition = o.position;
             o.position = new Vector2(o.position.x + o.velocity.x, o.position.y + o.velocity.y);
+            o.bouncing = false;
         }
 
 
