@@ -174,8 +174,8 @@ public class WinnerState extends State {
             float width = Gdx.graphics.getWidth();
             float height = Gdx.graphics.getHeight();
 
-            if (loser == 0) {
-                winner = new Image(new SpriteDrawable(new Sprite(new Texture("winscreen/player1.png"))));
+            if (loser == 2) {
+                winner = new Image(new SpriteDrawable(new Sprite(new Texture("winscreen/pladyer1.png"))));
                 System.out.println("Player 1 one");
             }
             else {
