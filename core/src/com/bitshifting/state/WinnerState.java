@@ -86,7 +86,7 @@ public class WinnerState extends State {
             float width = Gdx.graphics.getWidth();
             float height = Gdx.graphics.getHeight();
 
-            if (loser == 1) {
+            if (loser == 0) {
                 winner = new Image(new SpriteDrawable(new Sprite(new Texture("winscreen/player1.png"))));
                 System.out.println("Player 1 one");
             }
@@ -96,8 +96,9 @@ public class WinnerState extends State {
             }
 
 
+            winner.setOriginX((width / 6.0f));
             winner.setY((height / 2.0f));
-            winner.setX((width / 7.5f));
+//            winner.setX((width / 7.5f));
             loserSet = true;
             stage.addActor(winner);
         }
