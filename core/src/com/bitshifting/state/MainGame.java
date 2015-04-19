@@ -4,7 +4,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.bitshifting.CollisionEvent;
 import com.bitshifting.entities.GameObject;
+import com.bitshifting.entities.PlayerObject;
 import com.bitshifting.entities.ProjectileObject;
+import com.bitshifting.entities.WallObject;
 import com.bitshifting.managers.InputManager;
 import com.bitshifting.managers.StateManager;
 
@@ -138,6 +140,30 @@ public class MainGame extends State{
                         break;
                 }
             }
+
+
+            // Player v projectile collision
+            if ((c.collider1 instanceof PlayerObject && c.collider2 instanceof ProjectileObject) ||
+                    (c.collider1 instanceof ProjectileObject && c.collider2 instanceof PlayerObject)) {
+                PlayerObject p = (PlayerObject) (c.collider1 instanceof PlayerObject ? c.collider1 : c.collider2);
+                ProjectileObject j = (ProjectileObject) (c.collider1 instanceof  ProjectileObject ? c.collider1 : c.collider2);
+
+                p.health -= 50;
+
+                // remove the projectile
+                entities.remove(j);
+            }
+
+            // projectile vs wall collision - remove the projectile
+            if ((c.collider1 instanceof ProjectileObject && c.collider2 instanceof WallObject )  ||
+                 (c.collider1 instanceof ProjectileObject && c.collider2 instanceof WallObject)) {
+                    ProjectileObject p = (ProjectileObject) (c.collider1 instanceof  ProjectileObject ? c.collider1 : c.collider2);
+
+                entities.remove(p);
+            }
+
+
+
         }
 
         // Determine if a player has died in the last update, if so, end the game or something
