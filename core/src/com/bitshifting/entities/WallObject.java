@@ -10,8 +10,8 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class WallObject extends GameObject{
 
-    public WallObject(Vector2 position, Vector2 boundingBox){
-        super(position, boundingBox);
+    public WallObject(Vector2 position){
+        super(position, "tito.png");
     }
 
     @Override
