@@ -13,9 +13,10 @@ public class PowerUpObject extends GameObject {
     boolean valid; // Set to false when it should be deleted
 
     public PowerUpObject(Vector2 position, ProjectileType type){
-        super(position, "tito.png");
+        super(position, type.assetDir());
         this.type = type;
         this.valid = true;
+        this.sprite.setSize(this.sprite.getWidth() / 3.0f, this.sprite.getHeight() / 3.0f);
     }
 
     public void setValid(boolean valid){
@@ -38,7 +39,8 @@ public class PowerUpObject extends GameObject {
 
     @Override
     public void render(SpriteBatch batch) {
-        batch.draw(this.texture, this.position.x, this.position.y);
+//        batch.draw(this.texture, this.position.x, this.position.y);
+        this.sprite.draw(batch);
     }
 
     @Override

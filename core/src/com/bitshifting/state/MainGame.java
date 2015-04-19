@@ -291,7 +291,9 @@ public class MainGame extends State{
                 if ((j.playerID == 1 && p == player1) || (j.playerID == 2 && p ==player2)) {
                     // don't shoot yourself
                 } else {
-                    p.health -= 50;
+                    if (p.getRekt()) {
+                        // player is rekt
+                    }
 
                     // remove the projectile
                     entities.remove(j);

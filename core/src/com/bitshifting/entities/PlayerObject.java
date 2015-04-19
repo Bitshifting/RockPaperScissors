@@ -86,6 +86,21 @@ public class PlayerObject extends GameObject {
     }
 
     /**
+     * Call to cause damage to player. Returns true if ded and false if still alive
+     *
+     * @return ded status
+     */
+    public boolean getRekt() {
+        health -= 100;
+        if (health <= 0) {
+            System.out.println("Player " + this.playerID + " got rekt and is now ded.");
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Creates a new projectile from the player based on position and the input vector which represents the
      * direction the control stick was pointed in
      *
