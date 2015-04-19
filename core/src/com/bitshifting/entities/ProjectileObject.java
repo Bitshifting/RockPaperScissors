@@ -15,6 +15,7 @@ public class ProjectileObject extends GameObject {
     public ProjectileType type; // type of projectile it is (rock, paper, scissors)
     public int damageAmount; // base damage amount before modifiers
     public int playerID; // the ID of the player that fired it (just in case we need it)
+    float speed = 5.f;
 
     public ProjectileObject(Vector2 position, ProjectileType type, int playerID, String img) {
         super(position, img);
@@ -26,8 +27,8 @@ public class ProjectileObject extends GameObject {
 
     @Override
     public void update(float dt) {
-        this.position.x += dt * this.velocity.x * MainGame.VELOCITY_MOD;
-        this.position.y += dt * this.velocity.y * MainGame.VELOCITY_MOD;
+        this.position.x += dt * this.velocity.x * MainGame.VELOCITY_MOD * speed;
+        this.position.y += dt * this.velocity.y * MainGame.VELOCITY_MOD * speed;
         this.rotation += dt * 360.f;
 
         while(this.rotation > 360.f) {
