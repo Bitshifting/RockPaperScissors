@@ -125,7 +125,24 @@ public class InputManager implements InputProcessor {
 
         }
 
+        checkForFloatingPointError(player1LeftStick);
+        checkForFloatingPointError(player1RightStick);
+        checkForFloatingPointError(player2LeftStick);
+        checkForFloatingPointError(player2RightStick);
+
         return false;
+    }
+
+    public void checkForFloatingPointError(Vector2 stick) {
+        float error = 0.15f;
+
+        if(Math.abs(stick.x) < error) {
+            stick.x = 0.0f;
+        }
+
+        if(Math.abs(stick.y) < error) {
+            stick.y = 0.0f;
+        }
     }
 
     @Override
@@ -187,6 +204,11 @@ public class InputManager implements InputProcessor {
             }
 
         }
+
+        checkForFloatingPointError(player1LeftStick);
+        checkForFloatingPointError(player1RightStick);
+        checkForFloatingPointError(player2LeftStick);
+        checkForFloatingPointError(player2RightStick);
 
         return false;
     }
@@ -308,6 +330,11 @@ public class InputManager implements InputProcessor {
                     player2RightStick.x = value;
                 }
             }
+
+            checkForFloatingPointError(player1LeftStick);
+            checkForFloatingPointError(player1RightStick);
+            checkForFloatingPointError(player2LeftStick);
+            checkForFloatingPointError(player2RightStick);
             return false;
         }
 
