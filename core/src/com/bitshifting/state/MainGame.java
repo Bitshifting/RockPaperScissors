@@ -96,9 +96,11 @@ public class MainGame extends State{
             Bullet greater: Despawn the other bullet (this bullet is unaffected)
         Walls cannot (hopefully) collide with other walls, so we'll leave them be
          */
+        for (CollisionEvent c : collisionEvents) {
+            // Check for player hitting a wall.
 
 
-        Iterator<GameObject> objectIterator = entities.iterator();
+        }
 
         // Determine if a player has died in the last update, if so, end the game or something
     }
