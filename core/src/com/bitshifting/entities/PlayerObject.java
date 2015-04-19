@@ -25,14 +25,13 @@ public class PlayerObject extends GameObject {
     private static final int SIDE = 2;
 
     public static final int STANDING = 1;
-
+    private int cycle;
+    private int lastDirection;
 
     private Sprite body;
     private Sprite[] bodyDown;
     private Sprite[] bodySide;
     private Sprite[] bodyUp;
-
-    private int cycle;
 
     public PlayerObject(Vector2 position, int id, ProjectileType currentType) {
         super(position, "tito.png");
@@ -74,6 +73,7 @@ public class PlayerObject extends GameObject {
         }
 
         cycle = STANDING;
+        sideStand();
     }
 
     public void changeProjectile(ProjectileType newType) {
@@ -138,6 +138,58 @@ public class PlayerObject extends GameObject {
         this.position.x += dt * this.velocity.x * MainGame.VELOCITY_MOD;
         this.position.y += dt * this.velocity.y * MainGame.VELOCITY_MOD;
 
+        if (this.velocity.x == 0 && this.velocity.y == 0) {
+            callStand();
+        }
+        else if (this.velocity.x > 0) {
+            // right
+            if (this.velocity.y > 0) {
+                // up
+                if (Math.abs(this.velocity.y) > Math.abs(this.velocity.x)) {
+                    upRun();
+                }
+                else if (Math.abs(this.velocity.y) <= Math.abs(this.velocity.x)) {
+                    sideRun();
+                }
+            }
+            else if (this.velocity.y < 0) {
+                // down
+                if (Math.abs(this.velocity.y) > Math.abs(this.velocity.x)) {
+                    downRun();
+                }
+                else if (Math.abs(this.velocity.y) <= Math.abs(this.velocity.x)) {
+                    sideRun();
+                }
+            }
+        }
+        else if (this.velocity.x < 0) {
+            // left
+            if (this.velocity.y > 0) {
+                // up
+                if (Math.abs(this.velocity.y) > Math.abs(this.velocity.x)) {
+                    upRun();
+                }
+                else if (Math.abs(this.velocity.y) <= Math.abs(this.velocity.x)) {
+                    sideRun();
+                }
+            }
+            else if (this.velocity.y < 0) {
+                // down
+                if (Math.abs(this.velocity.y) > Math.abs(this.velocity.x)) {
+                    downRun();
+                }
+                else if (Math.abs(this.velocity.y) <= Math.abs(this.velocity.x)) {
+                    sideRun();
+                }
+            }
+        }
+
+        for (int i = 0; i < 3; i++) {
+            bodySide[i].setPosition(this.position.x, this.position.y);
+            bodyUp[i].setPosition(this.position.x, this.position.y);
+            bodyDown[i].setPosition(this.position.x, this.position.y);
+        }
+
         this.lastPosition = this.position;
         this.bouncing = false;
     }
@@ -149,7 +201,7 @@ public class PlayerObject extends GameObject {
 
     @Override
     public void render(SpriteBatch batch) {
-        batch.draw(this.texture, this.position.x, this.position.y);
+        body.draw(batch);
     }
 
     @Override
@@ -157,33 +209,53 @@ public class PlayerObject extends GameObject {
 
     }
 
+    private void callStand() {
+        switch (lastDirection) {
+            case UP:
+                upStand();
+                break;
+            case DOWN:
+                downStand();
+                break;
+            case SIDE:
+                sideStand();
+                break;
+        }
+    }
+
     private void downStand() {
         body = bodyDown[STANDING];
         cycle = STANDING;
+        lastDirection = DOWN;
     }
 
-    private void downRun(int cycle) {
+    private void downRun() {
         body = bodyDown[cycle];
         cycle = (cycle + 1) % 3;
+        lastDirection = DOWN;
     }
 
     private void upStand() {
         body = bodyUp[STANDING];
         cycle = STANDING;
+        lastDirection = UP;
     }
 
-    private void upRun(int cycle) {
+    private void upRun() {
         body = bodyUp[cycle];
         cycle = (cycle + 1) % 3;
+        lastDirection = UP;
     }
 
     private void sideStand() {
         body = bodySide[STANDING];
         cycle = STANDING;
+        lastDirection = SIDE;
     }
 
-    private void sideRun(int cycle) {
+    private void sideRun() {
         body = bodySide[cycle];
         cycle = (cycle + 1) % 3;
+        lastDirection = SIDE;
     }
 }
