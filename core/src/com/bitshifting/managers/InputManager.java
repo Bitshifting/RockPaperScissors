@@ -18,6 +18,8 @@ import com.bitshifting.Input.ControllerButtons;
  * Once we know, that player uses local input and the other player uses input from a web caller (if we get to it)
  */
 public class InputManager implements InputProcessor {
+    public static InputManager instance = new InputManager();
+
     boolean player1Keyboard = false; // true if player 1 is using a keyboard
     Controller player1, player2;
     // Current button states and stuff
@@ -25,7 +27,7 @@ public class InputManager implements InputProcessor {
     boolean player2Start, player2DLeft, player2DRight, player2DUp, player2DDown, player2A, player2B;
     public Vector2 player1LeftStick, player1RightStick, player2LeftStick, player2RightStick;
 
-    public InputManager() {
+    private InputManager() {
         Array<Controller> controllers = Controllers.getControllers();
 
         System.out.println("Found " + controllers.size + " controllers");
@@ -55,6 +57,10 @@ public class InputManager implements InputProcessor {
         player1RightStick = new Vector2();
         player2LeftStick = new Vector2();
         player2RightStick = new Vector2();
+    }
+
+    public static InputManager getInstance(){
+        return instance;
     }
 
     @Override
