@@ -375,7 +375,7 @@ public class InputManager implements InputProcessor {
             toReturn = player1DRight;
             player1DRight = false;
         }else if (player == 2){
-            toReturn = player2DLeft;
+            toReturn = player2DRight;
             player2DRight = false;
         }
         return toReturn;
