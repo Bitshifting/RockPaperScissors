@@ -3,10 +3,7 @@ package com.bitshifting.state;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.bitshifting.CollisionEvent;
-import com.bitshifting.entities.GameObject;
-import com.bitshifting.entities.PlayerObject;
-import com.bitshifting.entities.ProjectileObject;
-import com.bitshifting.entities.WallObject;
+import com.bitshifting.entities.*;
 import com.bitshifting.managers.InputManager;
 import com.bitshifting.managers.StateManager;
 
@@ -163,6 +160,15 @@ public class MainGame extends State{
             }
 
 
+            // Player vs powerup - pick up the powerup!
+            if ((c.collider1 instanceof PowerUpObject && c.collider2 instanceof PlayerObject) ||
+                    (c.collider1 instanceof PlayerObject && c.collider2 instanceof PowerUpObject)) {
+                // Change the type of the player to the powerup
+                PlayerObject p = (PlayerObject) (c.collider1 instanceof  PowerUpObject? c.collider1: c.collider2);
+                ProjectileObject j = (ProjectileObject)(c.collider1 instanceof  PowerUpObject? c.collider2: c.collider1);
+                 p.currentType = j.type;
+                entities.remove(j);
+            }
 
         }
 
