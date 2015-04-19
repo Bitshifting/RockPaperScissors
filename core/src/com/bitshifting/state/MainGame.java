@@ -1,5 +1,6 @@
 package com.bitshifting.state;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -8,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.bitshifting.CollisionEvent;
 import com.bitshifting.entities.GameObject;
+import com.bitshifting.entities.PlayerObject;
+import com.bitshifting.entities.ProjectileObject;
 import com.bitshifting.managers.InputManager;
 import com.bitshifting.managers.StateManager;
 
@@ -20,12 +23,12 @@ import java.util.List;
  */
 public class MainGame extends State{
     // References into the entities array!
-    GameObject player1;
-    GameObject player2;
+    PlayerObject player1;
+    PlayerObject player2;
+    float velocityMod = 1.0f; //change this to correctly adjust the velocity to a reasonable level
 
     SpriteBatch batch; // Our sprite batch for rendering
     List<GameObject> entities; // the list of game entities
-    InputManager inputs; // The manager for the inputs
 
     Sprite floor;
     Sprite walls;
@@ -35,8 +38,9 @@ public class MainGame extends State{
 
     public MainGame(StateManager sm){
         super(sm);
+        float height = Gdx.graphics.getHeight();
+        float width = Gdx.graphics.getWidth();
         entities = new ArrayList<GameObject>(); // Initialize our game object list
-
         f = new Texture("arena/arena_floor.png");
         w = new Texture("arena/arena_walls.png");
 
@@ -45,17 +49,44 @@ public class MainGame extends State{
 
         floor.setPosition(0, 0);
         walls.setPosition(0, 0);
+
+        floor.setSize(width, height);
+        walls.setSize(width, height);
+
+        batch = new SpriteBatch();
     }
 
     @Override
     public void handleInput() {
+        InputManager manager = InputManager.getInstance();
         // We want to only handle inputs that would alter the game state (pause, fire, movement keys)
         // See if the pause key is pressed
-
+        if (manager.getPlayerStart(1) || manager.getPlayerStart(2)){
+            //Pause the game
+        }
         // See if either fire key is pressed and handle accordingly
+        // First get player 1's joystick input
+        Vector2 player1Fire = manager.player1RightStick;
+        Vector2 player2Fire = manager.player2RightStick;
+        // Now see if these are over a threshold (.5 or something)
+        // TODO add some timer so that we don't shoot too fast probably
+        if (player1Fire.len() > 0.5f){
+            ProjectileObject newBullet = player1.fire(player1Fire);
+            entities.add(newBullet);
+        }
+        if (player2Fire.len() > 0.5f){
+            ProjectileObject newBullet = player2.fire(player2Fire);
+            entities.add(newBullet);
+        }
 
-        // See what movement keys are pressed
-        // MAKE SURE TO NOT ACTUALLY MOVE/MAKE AN OBJECT BUT RATHER JUST SET A BOOLEAN THAT WILL BE HANDLED IN update
+        // Now look at the left stick and assign player velocities
+        // Get the input values for the joysticks
+        Vector2 player1Vel = manager.player1LeftStick;
+        Vector2 player2Vel = manager.player2LeftStick;
+        // TODO might need to flip magnitudes of stick inputs (weird)
+        player1.velocity = player1Vel;
+        player2.velocity = player2Vel;
+        // I think that's it
     }
 
     @Override
@@ -65,7 +96,7 @@ public class MainGame extends State{
         // Move all entities to their next position based on their velocity
         for (GameObject o : entities) {
             o.lastPosition = o.position;
-            o.position = new Vector2(o.position.x + o.velocity.x, o.position.y + o.velocity.y);
+            o.position = new Vector2(o.position.x + o.velocity.x*dt*velocityMod, o.position.y + o.velocity.y*dt*velocityMod);
             o.bouncing = false;
         }
 
@@ -125,8 +156,8 @@ public class MainGame extends State{
     public void render() {
         batch.begin();
 
-        batch.draw(f, 0, 0);
-        batch.draw(w, 0, 0);
+        floor.draw(batch);
+        walls.draw(batch);
 
         for (GameObject entity : entities){
             entity.render(batch);
