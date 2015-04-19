@@ -33,7 +33,8 @@ public class PlayerObject extends GameObject {
      * @return
      */
     public ProjectileObject fire(Vector2 direction) {
-        //TODO 
+        //TODO
+        return null;
     }
 
     @Override
