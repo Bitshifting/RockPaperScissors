@@ -36,7 +36,7 @@ public class MainMenu extends State {
     TweenManager tweenManager;
     float tweenDuration = 1.0f;
 
-    public MainMenu(StateManager sm) {
+    public MainMenu(final StateManager sm) {
         super(sm);
 
         Tween.registerAccessor(Image.class, new ImageTweenAccessor());
@@ -106,6 +106,10 @@ public class MainMenu extends State {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("Shoot Clicked.");
+
+                //go into choose state
+                sm.setState(StateManager.MAIN_GAME);
+                sm.pushState(StateManager.CHOOSE_STATE);
             }
         });
 

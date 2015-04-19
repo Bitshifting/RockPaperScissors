@@ -26,7 +26,7 @@ public class MainGame extends State{
     public MainGame(StateManager sm){
         super(sm);
         entities = new ArrayList<GameObject>(); // Initialize our game object list
-
+        batch = new SpriteBatch();
     }
 
     @Override
