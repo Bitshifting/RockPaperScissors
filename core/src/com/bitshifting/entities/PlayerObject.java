@@ -1,6 +1,7 @@
 package com.bitshifting.entities;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -37,6 +38,7 @@ public class PlayerObject extends GameObject {
 
     boolean flipped = false;
     public HealthBar mHealth;
+    Sound gunshotSound = Gdx.audio.newSound((Gdx.files.internal("sounds/gunshot.wav")));
 
     Vector2 posOfBazook;
 
@@ -187,7 +189,7 @@ public class PlayerObject extends GameObject {
         }
 
         projectile.velocity = newDirection;
-
+        gunshotSound.play();
         return projectile;
     }
 

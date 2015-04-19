@@ -1,6 +1,7 @@
 package com.bitshifting.state;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -54,6 +55,8 @@ public class MainGame extends State{
     boolean p1Bullet = false;
     float p2Shoot = 0.f;
     boolean p2Bullet = false;
+    Sound cockSound = Gdx.audio.newSound(Gdx.files.internal("sounds/gun_cock.wav"));
+    Sound groanSound = Gdx.audio.newSound(Gdx.files.internal("sounds/groan.wav"));
 
     public MainGame(StateManager sm){
         super(sm);
@@ -309,6 +312,7 @@ public class MainGame extends State{
                     // don't shoot yourself
                 } else {
                     p.decrementHealth(50);
+                    groanSound.play();
                     if (p.getRekt()) {
                         // player is rekt
                     }
