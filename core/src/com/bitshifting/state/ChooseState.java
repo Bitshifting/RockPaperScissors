@@ -105,8 +105,6 @@ public class ChooseState extends State {
                         game.player2 = new PlayerObject(player2StartingPos, i, ProjectileType.ROCK);
                     }
                 }
-
-                System.out.println("Player " + i + " chose Rock!");
             }
 
             if (InputManager.getInstance().getPlayerDRight(i) || InputManager.getInstance().getPlayerB(i)) {
@@ -120,7 +118,6 @@ public class ChooseState extends State {
                     }
                 }
 
-                System.out.println("Player " + i + " chose Scissors!");
             }
 
             if(InputManager.getInstance().getPlayerDDown(i) || InputManager.getInstance().getPlayerA(i)) {
@@ -134,7 +131,6 @@ public class ChooseState extends State {
                     }
                 }
 
-                System.out.println("Player " + i + " chose Paper!");
             }
         }
 
