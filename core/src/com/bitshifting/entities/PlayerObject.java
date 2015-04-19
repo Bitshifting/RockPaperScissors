@@ -3,6 +3,7 @@ package com.bitshifting.entities;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.bitshifting.state.MainGame;
 
 /**
  * Created by Sam on 4/18/2015.
@@ -40,7 +41,8 @@ public class PlayerObject extends GameObject {
 
     @Override
     public void update(float dt) {
-
+        this.position.x += dt * this.velocity.x * MainGame.VELOCITY_MOD;
+        this.position.y += dt * this.velocity.y * MainGame.VELOCITY_MOD;
     }
 
     @Override

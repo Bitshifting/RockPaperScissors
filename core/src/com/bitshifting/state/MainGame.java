@@ -20,7 +20,7 @@ public class MainGame extends State{
     // References into the entities array!
     PlayerObject player1;
     PlayerObject player2;
-    float velocityMod = 1.0f; //change this to correctly adjust the velocity to a reasonable level
+    public static final float VELOCITY_MOD = 1.0f; //change this to correctly adjust the velocity to a reasonable level
 
     SpriteBatch batch; // Our sprite batch for rendering
     List<GameObject> entities; // the list of game entities
@@ -89,12 +89,17 @@ public class MainGame extends State{
 
     @Override
     public void update(float dt) {
+        // Run update on all the entities
+        for (GameObject o : entities) {
+            o.update(dt);
+        }
+
         ArrayList<CollisionEvent> collisionEvents = new ArrayList<CollisionEvent>();
 
         // Move all entities to their next position based on their velocity
         for (GameObject o : entities) {
             o.lastPosition = o.position;
-            o.position = new Vector2(o.position.x + o.velocity.x*dt*velocityMod, o.position.y + o.velocity.y*dt*velocityMod);
+            o.position = new Vector2(o.position.x + o.velocity.x*dt* VELOCITY_MOD, o.position.y + o.velocity.y*dt* VELOCITY_MOD);
             o.bouncing = false;
         }
 
@@ -115,6 +120,9 @@ public class MainGame extends State{
 
         // Check for bounces and restore their previous positions.
         for (GameObject o : entities) {
+
+
+
             if (o.bouncing) {
                 o.position = o.lastPosition;
             }
