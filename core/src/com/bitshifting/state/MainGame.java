@@ -316,6 +316,8 @@ public class MainGame extends State{
                     groanSound.play();
                     if (p.getRekt()) {
                         // player is rekt
+                        sm.setState(StateManager.WINNER_STATE);
+                        ((WinnerState)sm.stateStack.peek()).loser = p.playerID;
                     }
 
                     // remove the projectile

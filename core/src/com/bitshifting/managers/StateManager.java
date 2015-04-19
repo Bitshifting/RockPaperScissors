@@ -12,6 +12,7 @@ public class StateManager {
     public static final int CHOOSE_STATE = 1;
     public static final int MAIN_GAME = 2;
     public static final int RULES_STATE = 3;
+    public static final int WINNER_STATE = 4;
 
     private Main game;
     public Stack<State> stateStack;
@@ -56,6 +57,8 @@ public class StateManager {
             return new RulesState(this);
         } else if(state == MAIN_GAME) {
             return new MainGame(this);
+        } else if(state == WINNER_STATE) {
+            return new WinnerState(this);
         }
 
         return null;
