@@ -30,6 +30,7 @@ public class PlayerObject extends GameObject {
     private Texture[] bodyUp;
 
     boolean flipped = false;
+    public HealthBar mHealth;
 
     public PlayerObject(Vector2 position, int id, ProjectileType currentType) {
         super(position, "tito.png");
@@ -198,6 +199,11 @@ public class PlayerObject extends GameObject {
     @Override
     public void dispose() {
 
+    }
+
+    public void decrementHealth(int amt){
+        this.health -= amt;
+        this.mHealth.decrementHealth(amt);
     }
 
     private void callStand() {
