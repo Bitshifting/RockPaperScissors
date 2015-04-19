@@ -51,10 +51,10 @@ public class ChooseState extends State {
         player2Pressed = false;
 
         //width of wall
-       //float widthOfWall = game;
+        float widthOfWall = game.WIDTH_OF_WALL;
 
-        player1StartingPos = new Vector2(0, 0);
-        player2StartingPos = new Vector2(0, 0);
+        player1StartingPos = new Vector2(widthOfWall, 0);
+        player2StartingPos = new Vector2(Gdx.graphics.getWidth() - widthOfWall - 100.f, Gdx.graphics.getHeight() - widthOfWall - 100.f);
         playerBoundingBox = new Vector2(50, 50);
 
         readyBox = new Texture("selectmenu/ready.png");
