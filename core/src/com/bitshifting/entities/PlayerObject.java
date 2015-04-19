@@ -1,5 +1,6 @@
 package com.bitshifting.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -181,6 +182,15 @@ public class PlayerObject extends GameObject {
         }
 
         sprite.setPosition(this.position.x, this.position.y);
+
+        if (this.position.x < 0)
+            this.position.x = 0;
+        if (this.position.y < 0)
+            this.position.y = 0;
+        if (this.position.y + this.sprite.getHeight() > Gdx.graphics.getHeight())
+            this.position.y = Gdx.graphics.getHeight() - this.sprite.getHeight();
+        if (this.position.x + this.sprite.getWidth() > Gdx.graphics.getWidth())
+            this.position.x = Gdx.graphics.getWidth() - this.sprite.getWidth();
 
         this.bouncing = false;
     }
