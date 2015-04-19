@@ -61,36 +61,36 @@ public class ControllerButtons {
     public static final PovDirection P880DLEFT = PovDirection.west;
 
     public static int getAButton(String name){
-        if (name.equals(XboxName)){
+        if (name.contains(XboxName)){
             return XboxA;
-        }else if (name.equals(P880Name)){
+        }else if (name.contains(P880Name)){
             return P880B3;
         }
         return 0;
     }
 
     public static int getBButton(String name){
-        if (name.equals(XboxName)){
+        if (name.contains(XboxName)){
             return XboxB;
-        }else if (name.equals(P880Name)){
+        }else if (name.contains(P880Name)){
             return P880B4;
         }
         return 1;
     }
 
     public static int getXButton(String name){
-        if (name.equals(XboxName)){
+        if (name.contains(XboxName)){
             return XboxX;
-        }else if (name.equals(P880Name)){
+        }else if (name.contains(P880Name)){
             return P880B1;
         }
         return 1;
     }
 
     public static int getStart(String name){
-        if (name.equals(XboxName)){
+        if (name.contains(XboxName)){
             return XboxStart;
-        }else if (name.equals(P880Name)){
+        }else if (name.contains(P880Name)){
             return P880Start;
         }
         return 7;
