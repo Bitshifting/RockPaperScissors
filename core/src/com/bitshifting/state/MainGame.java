@@ -309,6 +309,9 @@ public class MainGame extends State{
                     // don't shoot yourself
                 } else {
                     p.decrementHealth(50);
+                    if (p.getRekt()) {
+                        // player is rekt
+                    }
 
                     // remove the projectile
                     entities.remove(j);
