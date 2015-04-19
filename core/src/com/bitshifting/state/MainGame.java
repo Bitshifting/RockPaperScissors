@@ -2,6 +2,8 @@ package com.bitshifting.state;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.bitshifting.CollisionEvent;
 import com.bitshifting.entities.GameObject;
 import com.bitshifting.managers.InputManager;
@@ -23,10 +25,11 @@ public class MainGame extends State{
     List<GameObject> entities; // the list of game entities
     InputManager inputs; // The manager for the inputs
 
+    GameObject background;
+
     public MainGame(StateManager sm){
         super(sm);
         entities = new ArrayList<GameObject>(); // Initialize our game object list
-
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.bitshifting.entities;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -7,7 +8,7 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class ScissorProjectile extends ProjectileObject {
     public ScissorProjectile(Vector2 position, Vector2 boundingBox, ProjectileType type, int playerID) {
-        super(position, boundingBox, type, playerID);
-        this.type = ProjectileType.SCISSOR;
+        super(position, boundingBox, ProjectileType.SCISSOR, playerID);
+        this.texture = new Texture("weapons/scissor.png");
     }
 }
