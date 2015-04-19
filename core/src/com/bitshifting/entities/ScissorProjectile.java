@@ -8,6 +8,6 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class ScissorProjectile extends ProjectileObject {
     public ScissorProjectile(Vector2 position, ProjectileType type, int playerID) {
-        super(position, ProjectileType.SCISSOR, playerID, "weapons/paper.png");
+        super(position, ProjectileType.SCISSOR, playerID, "weapons/scissor.png");
     }
 }

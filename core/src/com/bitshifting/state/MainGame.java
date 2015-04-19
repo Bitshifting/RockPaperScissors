@@ -23,6 +23,8 @@ public class MainGame extends State{
     PlayerObject player2;
     public static final float VELOCITY_MOD = 100.0f; //change this to correctly adjust the velocity to a reasonable level
 
+    public static final float BULLET_TIMER = 0.5f;
+
     SpriteBatch batch; // Our sprite batch for rendering
     List<GameObject> entities; // the list of game entities
 
@@ -42,6 +44,11 @@ public class MainGame extends State{
     private Texture twoTex;
     private Texture oneTex;
     private Texture goTex;
+
+    float p1Shoot = 0.f;
+    boolean p1Bullet = false;
+    float p2Shoot = 0.f;
+    boolean p2Bullet = false;
 
     public MainGame(StateManager sm){
         super(sm);
@@ -85,22 +92,6 @@ public class MainGame extends State{
         if (manager.getPlayerStart(1) || manager.getPlayerStart(2)){
             //Pause the game
         }
-        // See if either fire key is pressed and handle accordingly
-        // First get player 1's joystick input
-        Vector2 player1Fire = manager.player1RightStick;
-        Vector2 player2Fire = manager.player2RightStick;
-        // Now see if these are over a threshold (.5 or something)
-
-        if (player1Fire.len() > 0.5f) {
-            System.out.println("Player 1 Fire");
-            ProjectileObject newBullet = player1.fire(player1Fire);
-            entities.add(newBullet);
-        }
-        if (player2Fire.len() > 0.5f){
-            System.out.println("Player 2 Fire");
-            ProjectileObject newBullet = player2.fire(player2Fire);
-            entities.add(newBullet);
-        }
 
         // Now look at the left stick and assign player velocities
         // Get the input values for the joysticks
@@ -131,6 +122,41 @@ public class MainGame extends State{
             }
 
             return;
+        }
+
+        if(p1Bullet) {
+            p1Shoot += dt;
+
+            if(p1Shoot > BULLET_TIMER) {
+                p1Shoot = 0.f;
+                p1Bullet = false;
+            }
+        }
+
+        if(p2Bullet) {
+            p2Shoot += dt;
+
+            if(p2Shoot > BULLET_TIMER) {
+                p2Shoot = 0.f;
+                p2Bullet = false;
+            }
+        }
+
+        // See if either fire key is pressed and handle accordingly
+        // First get player 1's joystick input
+        Vector2 player1Fire = InputManager.getInstance().player1RightStick;
+        Vector2 player2Fire = InputManager.getInstance().player2RightStick;
+        // Now see if these are over a threshold (.5 or something)
+
+        if ((player1Fire.len() > 0.5f) && !p1Bullet) {
+            ProjectileObject newBullet = player1.fire(player1Fire);
+            entities.add(newBullet);
+            p1Bullet = true;
+        }
+        if ((player2Fire.len() > 0.5f) && !p2Bullet){
+            ProjectileObject newBullet = player2.fire(player2Fire);
+            entities.add(newBullet);
+            p2Bullet = true;
         }
 
         // Run update on all the entities
