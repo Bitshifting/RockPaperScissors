@@ -12,6 +12,7 @@ import com.bitshifting.state.MainGame;
  * Created by Sam on 4/18/2015.
  */
 public class PlayerObject extends GameObject {
+    private static final float PLAYER_SPEED_MOD = 1.75f;
     public int playerID; // either player 1 or 2
     public int health; // health value (starts at 1000 currently)
     public ProjectileType currentType; // the current projectile type that the player has
@@ -129,7 +130,7 @@ public class PlayerObject extends GameObject {
      * @return ded status
      */
     public boolean getRekt() {
-        health -= 100;
+        decrementHealth(50);
         if (health <= 0) {
             System.out.println("Player " + this.playerID + " got rekt and is now ded.");
             return true;
@@ -215,15 +216,15 @@ public class PlayerObject extends GameObject {
                 upRun();
             }
         }
-
+        gunshotSound.play();
         return projectile;
     }
 
     @Override
     public void update(float dt) {
         this.lastPosition = new Vector2(this.position);
-        this.position.x += dt * this.velocity.x * MainGame.VELOCITY_MOD;
-        this.position.y += dt * this.velocity.y * MainGame.VELOCITY_MOD;
+        this.position.x += dt * this.velocity.x * MainGame.VELOCITY_MOD * PLAYER_SPEED_MOD;
+        this.position.y += dt * this.velocity.y * MainGame.VELOCITY_MOD * PLAYER_SPEED_MOD;
 
         if (Math.abs(this.velocity.x) < 0.001f && Math.abs(this.velocity.y) < 0.001f) {
             callStand();
@@ -291,7 +292,7 @@ public class PlayerObject extends GameObject {
 
     }
 
-    public void decrementHealth(int amt){
+    private void decrementHealth(int amt){
         this.health -= amt;
         this.mHealth.decrementHealth(amt);
     }
