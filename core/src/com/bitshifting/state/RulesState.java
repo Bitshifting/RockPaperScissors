@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.bitshifting.managers.InputManager;
 import com.bitshifting.managers.StateManager;
 
@@ -96,5 +97,10 @@ public class RulesState extends State {
     @Override
     public void dispose() {
         stage.dispose();
+    }
+
+    public void resize(int width, int height) {
+        stage.getViewport().setScreenHeight(height);
+        stage.getViewport().setScreenWidth(width);
     }
 }

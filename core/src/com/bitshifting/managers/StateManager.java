@@ -69,4 +69,10 @@ public class StateManager {
         State state = stateStack.pop();
         state.dispose();
     }
+
+    public void resize(int width, int height) {
+        for(State state : stateStack) {
+            state.resize(width, height);
+        }
+    }
 }

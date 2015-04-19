@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.bitshifting.CollisionEvent;
 import com.bitshifting.entities.*;
 import com.bitshifting.managers.InputManager;
@@ -393,5 +394,10 @@ public class MainGame extends State{
     @Override
     public void dispose() {
         // dispose of our textures if we want
+    }
+
+    @Override
+    public void resize(int width, int height) {
+
     }
 }

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.bitshifting.entities.PlayerObject;
 import com.bitshifting.entities.ProjectileType;
 import com.bitshifting.managers.InputManager;
@@ -172,6 +173,10 @@ public class ChooseState extends State {
 
     @Override
     public void dispose() {
+
+    }
+
+    public void resize(int width, int height) {
 
     }
 }
