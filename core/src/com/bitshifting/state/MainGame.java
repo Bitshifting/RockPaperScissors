@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.bitshifting.CollisionEvent;
 import com.bitshifting.entities.GameObject;
+import com.bitshifting.entities.PlayerObject;
+import com.bitshifting.entities.WallObject;
 import com.bitshifting.managers.InputManager;
 import com.bitshifting.managers.StateManager;
 
@@ -86,7 +88,6 @@ public class MainGame extends State{
         /*
         Collision rules:
         A player hitting a wall: Take the position and add a negative velocity to it (this will effectively undo movement)
-        A player hitting a player: Take the position and add a negative veolcity to both players (undoing both their movements)
         A bullet hitting a player: Assume the bullet was fired from the other player, so don't check.
             Despawn the bullet and decrease the player's health by some amount
         A bullet hitting a wall: Despawn the bullet
@@ -97,7 +98,13 @@ public class MainGame extends State{
         Walls cannot (hopefully) collide with other walls, so we'll leave them be
          */
         for (CollisionEvent c : collisionEvents) {
-            // Check for player hitting a wall.
+
+            if ((c.collider1 instanceof PlayerObject && c.collider2 instanceof WallObject) ||
+                    (c.collider2 instanceof PlayerObject && c.collider1 instanceof WallObject)) {
+                // Player hitting a wall.
+
+            }
+
 
 
         }
