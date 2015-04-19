@@ -83,10 +83,11 @@ public class PlayerObject extends GameObject {
 
     @Override
     public void update(float dt) {
-        this.position.x += dt * this.velocity.x * MainGame.VELOCITY_MOD;
-        this.position.y += dt * this.velocity.y * MainGame.VELOCITY_MOD;
-
         this.lastPosition = this.position;
+
+        this.position = new Vector2(this.position.x + dt * this.velocity.x * MainGame.VELOCITY_MOD, this.position.y + dt * this.velocity.y * MainGame.VELOCITY_MOD);
+
+
         this.bouncing = false;
     }
 
