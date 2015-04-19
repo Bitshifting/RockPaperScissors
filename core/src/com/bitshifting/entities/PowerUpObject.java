@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector2;
  * Represents a powerup object. These will be periodically spawned throughout the arena as a random type
  */
 public class PowerUpObject extends GameObject {
-    ProjectileType type; // The type that the player can change to
+    public ProjectileType type; // The type that the player can change to
     public int timeToLive; // The amount of time this power up exists before it must be deleted
     boolean valid; // Set to false when it should be deleted
 
