@@ -1,5 +1,7 @@
 package com.bitshifting.state;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -25,11 +27,24 @@ public class MainGame extends State{
     List<GameObject> entities; // the list of game entities
     InputManager inputs; // The manager for the inputs
 
-    GameObject background;
+    Sprite floor;
+    Sprite walls;
+
+    Texture w;
+    Texture f;
 
     public MainGame(StateManager sm){
         super(sm);
         entities = new ArrayList<GameObject>(); // Initialize our game object list
+
+        f = new Texture("arena/arena_floor.png");
+        w = new Texture("arena/arena_walls.png");
+
+        floor = new Sprite(f);
+        walls = new Sprite(w);
+
+        floor.setPosition(0, 0);
+        walls.setPosition(0, 0);
     }
 
     @Override
@@ -109,6 +124,9 @@ public class MainGame extends State{
     @Override
     public void render() {
         batch.begin();
+
+        batch.draw(f, 0, 0);
+        batch.draw(w, 0, 0);
 
         for (GameObject entity : entities){
             entity.render(batch);
