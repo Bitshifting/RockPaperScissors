@@ -1,5 +1,6 @@
 package com.bitshifting.state;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -67,11 +68,11 @@ public class MainGame extends State{
         // TODO add some timer so that we don't shoot too fast probably
         if (player1Fire.len() > 0.5f){
             ProjectileObject newBullet = player1.fire(player1Fire);
-            entities.add(newBullet);
+            //entities.add(newBullet);
         }
         if (player2Fire.len() > 0.5f){
             ProjectileObject newBullet = player2.fire(player2Fire);
-            entities.add(newBullet);
+            //entities.add(newBullet);
         }
 
         // Now look at the left stick and assign player velocities
