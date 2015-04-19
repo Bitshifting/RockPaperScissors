@@ -192,9 +192,12 @@ public class MainGame extends State{
                 }
 
 
-                if (o.collidesWith(p) && !(o instanceof ProjectileObject) && !(p instanceof ProjectileObject)) {
-                    o.bouncing = true;
-                    p.bouncing = true;
+                if (o.collidesWith(p)) {
+                    if (!(o instanceof ProjectileObject) && !(p instanceof ProjectileObject)) {
+                        o.bouncing = true;
+                        p.bouncing = true;
+                    }
+
                     collisionEvents.add(new CollisionEvent(o, p));
                 }
             }
