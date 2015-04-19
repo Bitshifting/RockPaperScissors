@@ -14,7 +14,7 @@ public class StateManager {
     public static final int RULES_STATE = 3;
 
     private Main game;
-    private Stack<State> stateStack;
+    public Stack<State> stateStack;
 
     //constructor
     public StateManager(Main main)

@@ -110,6 +110,9 @@ public class MainMenu extends State {
                 //go into choose state
                 sm.setState(StateManager.MAIN_GAME);
                 sm.pushState(StateManager.CHOOSE_STATE);
+
+                //now that it is at the top, send in main game into the choose state
+                ((ChooseState)sm.stateStack.peek()).game = (MainGame)sm.stateStack.get(0);
             }
         });
 
