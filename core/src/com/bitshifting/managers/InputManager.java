@@ -9,6 +9,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.bitshifting.Input.ControllerButtons;
 
+import javax.naming.ldap.Control;
+
 /**
  * Created by sschwebach on 4/18/15.
  * This class interprets all inputs based on which mode we're doing and what input devices we have.
@@ -18,14 +20,16 @@ import com.bitshifting.Input.ControllerButtons;
  * Once we know, that player uses local input and the other player uses input from a web caller (if we get to it)
  */
 public class InputManager implements InputProcessor {
+    public static InputManager instance = new InputManager();
+
     boolean player1Keyboard = false; // true if player 1 is using a keyboard
     Controller player1, player2;
     // Current button states and stuff
-    boolean player1Start, player1DLeft, player1DRight, player1DUp, player1DDown, player1A, player1B;
-    boolean player2Start, player2DLeft, player2DRight, player2DUp, player2DDown, player2A, player2B;
+    boolean player1Start, player1DLeft, player1DRight, player1DUp, player1DDown, player1A, player1B, player1X;
+    boolean player2Start, player2DLeft, player2DRight, player2DUp, player2DDown, player2A, player2B, player2X;
     public Vector2 player1LeftStick, player1RightStick, player2LeftStick, player2RightStick;
 
-    public InputManager() {
+    private InputManager() {
         Array<Controller> controllers = Controllers.getControllers();
 
         System.out.println("Found " + controllers.size + " controllers");
@@ -55,6 +59,10 @@ public class InputManager implements InputProcessor {
         player1RightStick = new Vector2();
         player2LeftStick = new Vector2();
         player2RightStick = new Vector2();
+    }
+
+    public static InputManager getInstance() {
+        return instance;
     }
 
     @Override
@@ -108,6 +116,10 @@ public class InputManager implements InputProcessor {
                 case Input.Keys.BACKSPACE:
                     // Backspace sets b to true
                     player1B = true;
+                    break;
+                case Input.Keys.BACKSLASH:
+                    // Backslash set x to true
+                    player1X = true;
                     break;
             }
 
@@ -163,28 +175,34 @@ public class InputManager implements InputProcessor {
 
         @Override
         public boolean buttonDown(Controller controller, int buttonCode) {
-            if (!player1Keyboard){
-                if (controller == player1){
-                    if (buttonCode == ControllerButtons.getAButton(controller.getName())){
+            if (!player1Keyboard) {
+                if (controller == player1) {
+                    if (buttonCode == ControllerButtons.getAButton(controller.getName())) {
                         // A button
                         player1A = true;
-                    }else if (buttonCode == ControllerButtons.getBButton(controller.getName())){
+                    } else if (buttonCode == ControllerButtons.getBButton(controller.getName())) {
                         // B button
                         player1B = true;
-                    }else if (buttonCode == ControllerButtons.getStart(controller.getName())){
+                    } else if (buttonCode == ControllerButtons.getXButton(controller.getName())) {
+                        // X button
+                        player1X = true;
+                    } else if (buttonCode == ControllerButtons.getStart(controller.getName())) {
                         // Start button
                         player1Start = true;
                     }
                 }
             }
-            if (controller == player2){
-                if (buttonCode == ControllerButtons.getAButton(controller.getName())){
+            if (controller == player2) {
+                if (buttonCode == ControllerButtons.getAButton(controller.getName())) {
                     // A button
                     player2A = true;
-                }else if (buttonCode == ControllerButtons.getBButton(controller.getName())){
+                } else if (buttonCode == ControllerButtons.getBButton(controller.getName())) {
                     // B button
                     player2B = true;
-                }else if (buttonCode == ControllerButtons.getStart(controller.getName())){
+                } else if (buttonCode == ControllerButtons.getXButton(controller.getName())) {
+                    // X button
+                    player2X = true;
+                } else if (buttonCode == ControllerButtons.getStart(controller.getName())) {
                     // Start button
                     player2Start = true;
                 }
@@ -199,34 +217,34 @@ public class InputManager implements InputProcessor {
 
         @Override
         public boolean axisMoved(Controller controller, int axisCode, float value) {
-            if (!player1Keyboard){
-                if (controller == player1){
-                    if (axisCode == 0){
+            if (!player1Keyboard) {
+                if (controller == player1) {
+                    if (axisCode == 0) {
                         // Left stick Y
                         player1LeftStick.y = value;
-                    }else if (axisCode == 1){
+                    } else if (axisCode == 1) {
                         // Left stick X
                         player1LeftStick.x = value;
-                    }else if (axisCode == 2){
+                    } else if (axisCode == 2) {
                         // Right stick Y
                         player1RightStick.y = value;
-                    }else if (axisCode == 3){
+                    } else if (axisCode == 3) {
                         // Right stick X
                         player1RightStick.x = value;
                     }
                 }
             }
-            if (controller == player2){
-                if (axisCode == 0){
+            if (controller == player2) {
+                if (axisCode == 0) {
                     // Left stick Y
                     player2LeftStick.y = value;
-                }else if (axisCode == 1){
+                } else if (axisCode == 1) {
                     // Left stick X
                     player2LeftStick.x = value;
-                }else if (axisCode == 2){
+                } else if (axisCode == 2) {
                     // Right stick Y
                     player2RightStick.y = value;
-                }else if (axisCode == 3){
+                } else if (axisCode == 3) {
                     // Right stick X
                     player2RightStick.x = value;
                 }
@@ -236,34 +254,34 @@ public class InputManager implements InputProcessor {
 
         @Override
         public boolean povMoved(Controller controller, int povCode, PovDirection value) {
-            if (!player1Keyboard){
-                if (controller == player1){
-                    if (value == PovDirection.north){
+            if (!player1Keyboard) {
+                if (controller == player1) {
+                    if (value == PovDirection.north) {
                         // Dpad up
                         player1DUp = true;
-                    }else if (value == PovDirection.south){
+                    } else if (value == PovDirection.south) {
                         // Dpad down
                         player1DDown = true;
-                    }else if (value == PovDirection.west){
+                    } else if (value == PovDirection.west) {
                         // Dpad left
                         player1DLeft = true;
-                    }else if (value == PovDirection.east){
+                    } else if (value == PovDirection.east) {
                         // Dpad right
                         player1DRight = true;
                     }
                 }
             }
-            if (controller == player2){
-                if (value == PovDirection.north){
+            if (controller == player2) {
+                if (value == PovDirection.north) {
                     // Dpad up
                     player2DUp = true;
-                }else if (value == PovDirection.south){
+                } else if (value == PovDirection.south) {
                     // Dpad down
                     player2DDown = true;
-                }else if (value == PovDirection.west){
+                } else if (value == PovDirection.west) {
                     // Dpad left
                     player2DLeft = true;
-                }else if (value == PovDirection.east){
+                } else if (value == PovDirection.east) {
                     // Dpad right
                     player2DRight = true;
                 }
@@ -292,15 +310,16 @@ public class InputManager implements InputProcessor {
 
     /**
      * Returns the specfied button, and sets that flag to zero (access then without the methods to not destroy them)
+     *
      * @param player player number (1 or 2 currently)
-     * @return  Returns if that button was pressed since the last check
+     * @return Returns if that button was pressed since the last check
      */
-    public boolean getPlayerStart(int player){
+    public boolean getPlayerStart(int player) {
         boolean toReturn = false;
-        if (player == 1){
+        if (player == 1) {
             toReturn = player1Start;
             player1Start = false;
-        }else if (player == 2){
+        } else if (player == 2) {
             toReturn = player2Start;
             player2Start = false;
         }
@@ -309,15 +328,16 @@ public class InputManager implements InputProcessor {
 
     /**
      * Returns the specfied button, and sets that flag to zero (access then without the methods to not destroy them)
+     *
      * @param player player number (1 or 2 currently)
-     * @return  Returns if that button was pressed since the last check
+     * @return Returns if that button was pressed since the last check
      */
-    public boolean getPlayerA(int player){
+    public boolean getPlayerA(int player) {
         boolean toReturn = false;
-        if (player == 1){
+        if (player == 1) {
             toReturn = player1A;
             player1A = false;
-        }else if (player == 2){
+        } else if (player == 2) {
             toReturn = player2A;
             player2A = false;
         }
@@ -326,15 +346,16 @@ public class InputManager implements InputProcessor {
 
     /**
      * Returns the specfied button, and sets that flag to zero (access then without the methods to not destroy them)
+     *
      * @param player player number (1 or 2 currently)
-     * @return  Returns if that button was pressed since the last check
+     * @return Returns if that button was pressed since the last check
      */
-    public boolean getPlayerB(int player){
+    public boolean getPlayerB(int player) {
         boolean toReturn = false;
-        if (player == 1){
+        if (player == 1) {
             toReturn = player1B;
             player1B = false;
-        }else if (player == 2){
+        } else if (player == 2) {
             toReturn = player2B;
             player2B = false;
         }
@@ -343,15 +364,34 @@ public class InputManager implements InputProcessor {
 
     /**
      * Returns the specfied button, and sets that flag to zero (access then without the methods to not destroy them)
+     *
      * @param player player number (1 or 2 currently)
-     * @return  Returns if that button was pressed since the last check
+     * @return Returns if that button was pressed since the last check
      */
-    public boolean getPlayerDLeft(int player){
+    public boolean getPlayerX(int player) {
         boolean toReturn = false;
-        if (player == 1){
+        if (player == 1) {
+            toReturn = player1X;
+            player1X = false;
+        } else if (player == 2) {
+            toReturn = player2X;
+            player2X = false;
+        }
+        return toReturn;
+    }
+
+    /**
+     * Returns the specfied button, and sets that flag to zero (access then without the methods to not destroy them)
+     *
+     * @param player player number (1 or 2 currently)
+     * @return Returns if that button was pressed since the last check
+     */
+    public boolean getPlayerDLeft(int player) {
+        boolean toReturn = false;
+        if (player == 1) {
             toReturn = player1DLeft;
             player1DLeft = false;
-        }else if (player == 2){
+        } else if (player == 2) {
             toReturn = player2DLeft;
             player2DLeft = false;
         }
@@ -360,16 +400,17 @@ public class InputManager implements InputProcessor {
 
     /**
      * Returns the specfied button, and sets that flag to zero (access then without the methods to not destroy them)
+     *
      * @param player player number (1 or 2 currently)
-     * @return  Returns if that button was pressed since the last check
+     * @return Returns if that button was pressed since the last check
      */
-    public boolean getPlayerDRight(int player){
+    public boolean getPlayerDRight(int player) {
         boolean toReturn = false;
-        if (player == 1){
+        if (player == 1) {
             toReturn = player1DRight;
             player1DRight = false;
-        }else if (player == 2){
-            toReturn = player2DLeft;
+        } else if (player == 2) {
+            toReturn = player2DRight;
             player2DRight = false;
         }
         return toReturn;
@@ -377,15 +418,16 @@ public class InputManager implements InputProcessor {
 
     /**
      * Returns the specfied button, and sets that flag to zero (access then without the methods to not destroy them)
+     *
      * @param player player number (1 or 2 currently)
-     * @return  Returns if that button was pressed since the last check
+     * @return Returns if that button was pressed since the last check
      */
-    public boolean getPlayerDUp(int player){
+    public boolean getPlayerDUp(int player) {
         boolean toReturn = false;
-        if (player == 1){
+        if (player == 1) {
             toReturn = player1DUp;
             player1DUp = false;
-        }else if (player == 2){
+        } else if (player == 2) {
             toReturn = player2DUp;
             player2DUp = false;
         }
@@ -394,18 +436,21 @@ public class InputManager implements InputProcessor {
 
     /**
      * Returns the specfied button, and sets that flag to zero (access then without the methods to not destroy them)
+     *
      * @param player player number (1 or 2 currently)
-     * @return  Returns if that button was pressed since the last check
+     * @return Returns if that button was pressed since the last check
      */
-    public boolean getPlayerDDown(int player){
+    public boolean getPlayerDDown(int player) {
         boolean toReturn = false;
-        if (player == 1){
+        if (player == 1) {
             toReturn = player1DDown;
             player1DDown = false;
-        }else if (player == 2){
+        } else if (player == 2) {
             toReturn = player2DDown;
             player2DDown = false;
         }
         return toReturn;
     }
+
+
 }

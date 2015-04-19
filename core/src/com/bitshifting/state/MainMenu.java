@@ -4,22 +4,16 @@ import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenManager;
 import aurelienribon.tweenengine.equations.Bounce;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.bitshifting.entities.ImageTweenAccessor;
 import com.bitshifting.managers.StateManager;
-
-import javax.xml.soap.Text;
 
 public class MainMenu extends State {
 
@@ -36,7 +30,7 @@ public class MainMenu extends State {
     TweenManager tweenManager;
     float tweenDuration = 1.0f;
 
-    public MainMenu(StateManager sm) {
+    public MainMenu(final StateManager sm) {
         super(sm);
 
         Tween.registerAccessor(Image.class, new ImageTweenAccessor());
@@ -106,6 +100,13 @@ public class MainMenu extends State {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("Shoot Clicked.");
+
+                //go into choose state
+                sm.setState(StateManager.MAIN_GAME);
+                sm.pushState(StateManager.CHOOSE_STATE);
+
+                //now that it is at the top, send in main game into the choose state
+                ((ChooseState)sm.stateStack.peek()).game = (MainGame)sm.stateStack.get(0);
             }
         });
 
