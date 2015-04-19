@@ -34,10 +34,11 @@ public abstract class GameObject {
     public abstract void render(SpriteBatch batch);
     public abstract void dispose();
 
+    public static final int OVERLAP = 5;
 
     public boolean collidesWith(GameObject p) {
         return Intersector.overlaps(
-                new Rectangle(position.x, position.y, sprite.getWidth(), sprite.getHeight()),
-                new Rectangle(p.position.x, p.position.y, p.sprite.getWidth(), p.sprite.getHeight()));
+                new Rectangle(position.x + OVERLAP, position.y + OVERLAP, sprite.getWidth() - OVERLAP, sprite.getHeight() - OVERLAP),
+                new Rectangle(p.position.x + OVERLAP, p.position.y + OVERLAP, p.sprite.getWidth() - OVERLAP, p.sprite.getHeight() - OVERLAP));
     }
 }
