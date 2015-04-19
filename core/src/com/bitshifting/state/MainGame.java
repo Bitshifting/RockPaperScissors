@@ -166,10 +166,10 @@ public class MainGame extends State{
         }
 
         // add random drops
-        if (Math.random() < 0.01) {
+        if (Math.random() < 0.002) {
             // Spawn new random drop
             ProjectileType type = Math.random() < 0.33 ? ProjectileType.PAPER : Math.random() < 0.5 ? ProjectileType.ROCK : ProjectileType.SCISSOR;
-            entities.add (new PowerUpObject(new Vector2((float)(Math.random() * Gdx.graphics.getWidth()), (float)(Math.random() * Gdx.graphics.getHeight())
+            entities.add (new PowerUpObject(new Vector2((float)(Math.random() * (Gdx.graphics.getWidth() - 40) + 20), (float)(Math.random() * (Gdx.graphics.getHeight() - 40) + 20)
             ), type));
         }
         
