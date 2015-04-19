@@ -1,6 +1,8 @@
 package com.bitshifting.state;
 
+import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -25,6 +27,8 @@ public class MainMenu extends State {
     ImageButton shootButton;
     ImageButton settingsButton;
 
+    TweenManager tweenManager;
+
     public MainMenu(StateManager sm) {
         super(sm);
 
@@ -34,6 +38,7 @@ public class MainMenu extends State {
         float buttonPositionDivider = 1.f / 14.f;
         float heightOfButton = (7.f / 50.f) * height;
 
+        tweenManager = new TweenManager();
 
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
