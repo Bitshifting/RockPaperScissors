@@ -23,7 +23,7 @@ public class InputManager implements InputProcessor {
     // Current button states and stuff
     boolean player1Start, player1DLeft, player1DRight, player1DUp, player1DDown, player1A, player1B;
     boolean player2Start, player2DLeft, player2DRight, player2DUp, player2DDown, player2A, player2B;
-    Vector2 player1LeftStick, player1RightStick, player2LeftStick, player2RightStick;
+    public Vector2 player1LeftStick, player1RightStick, player2LeftStick, player2RightStick;
 
     public InputManager() {
         Array<Controller> controllers = Controllers.getControllers();
@@ -316,10 +316,10 @@ public class InputManager implements InputProcessor {
         boolean toReturn = false;
         if (player == 1){
             toReturn = player1A;
-            player1Start = false;
+            player1A = false;
         }else if (player == 2){
             toReturn = player2A;
-            player2Start = false;
+            player2A = false;
         }
         return toReturn;
     }
@@ -333,10 +333,10 @@ public class InputManager implements InputProcessor {
         boolean toReturn = false;
         if (player == 1){
             toReturn = player1B;
-            player1Start = false;
+            player1B = false;
         }else if (player == 2){
             toReturn = player2B;
-            player2Start = false;
+            player2B = false;
         }
         return toReturn;
     }
@@ -350,10 +350,10 @@ public class InputManager implements InputProcessor {
         boolean toReturn = false;
         if (player == 1){
             toReturn = player1DLeft;
-            player1Start = false;
+            player1DLeft = false;
         }else if (player == 2){
             toReturn = player2DLeft;
-            player2Start = false;
+            player2DLeft = false;
         }
         return toReturn;
     }
@@ -367,10 +367,10 @@ public class InputManager implements InputProcessor {
         boolean toReturn = false;
         if (player == 1){
             toReturn = player1DRight;
-            player1Start = false;
+            player1DRight = false;
         }else if (player == 2){
             toReturn = player2DLeft;
-            player2Start = false;
+            player2DRight = false;
         }
         return toReturn;
     }
@@ -384,10 +384,10 @@ public class InputManager implements InputProcessor {
         boolean toReturn = false;
         if (player == 1){
             toReturn = player1DUp;
-            player1Start = false;
+            player1DUp = false;
         }else if (player == 2){
             toReturn = player2DUp;
-            player2Start = false;
+            player2DUp = false;
         }
         return toReturn;
     }
@@ -401,10 +401,10 @@ public class InputManager implements InputProcessor {
         boolean toReturn = false;
         if (player == 1){
             toReturn = player1DDown;
-            player1Start = false;
+            player1DDown = false;
         }else if (player == 2){
             toReturn = player2DDown;
-            player2Start = false;
+            player2DDown = false;
         }
         return toReturn;
     }
