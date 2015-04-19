@@ -23,6 +23,12 @@ public class ProjectileObject extends GameObject {
         this.damageAmount = 100;
         this.playerID = playerID;
         this.rotation = 0.f;
+
+        this.sprite.setOriginCenter();;
+        this.sprite.setScale(0.5f, 0.5f);
+        this.position.x -= this.sprite.getWidth() / 2.f;
+        this.position.y -= this.sprite.getHeight() / 2.f;
+        sprite.setPosition(this.position.x, this.position.y);
     }
 
     @Override

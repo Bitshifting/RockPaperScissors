@@ -166,10 +166,10 @@ public class MainGame extends State{
         }
 
         // add random drops
-        if (Math.random() < 0.01) {
+        if (Math.random() < 0.002) {
             // Spawn new random drop
             ProjectileType type = Math.random() < 0.33 ? ProjectileType.PAPER : Math.random() < 0.5 ? ProjectileType.ROCK : ProjectileType.SCISSOR;
-            entities.add (new PowerUpObject(new Vector2((float)(Math.random() * Gdx.graphics.getWidth()), (float)(Math.random() * Gdx.graphics.getHeight())
+            entities.add (new PowerUpObject(new Vector2((float)(Math.random() * (Gdx.graphics.getWidth() - 40) + 20), (float)(Math.random() * (Gdx.graphics.getHeight() - 40) + 20)
             ), type));
         }
         
@@ -315,7 +315,8 @@ public class MainGame extends State{
                 // Change the type of the player to the powerup
                 PlayerObject p = (PlayerObject) (c.collider1 instanceof  PlayerObject? c.collider1: c.collider2);
                  PowerUpObject j = (PowerUpObject)(c.collider1 instanceof  PowerUpObject? c.collider1: c.collider2);
-                p.currentType = j.type;
+                //p.currentType = j.type;
+                p.changeProjectile(j.type);
                 entities.remove(j);
             }
 
