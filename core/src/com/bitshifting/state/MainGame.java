@@ -23,6 +23,9 @@ public class MainGame extends State{
     // References into the entities array!
     PlayerObject player1;
     PlayerObject player2;
+    HealthBar player1Health;
+    HealthBar player2Health;
+
     public static final float VELOCITY_MOD = 100.0f; //change this to correctly adjust the velocity to a reasonable level
 
     public static final float BULLET_TIMER = 0.5f;
@@ -79,12 +82,18 @@ public class MainGame extends State{
         timerSprite = new Sprite(threeTex);
         timerSprite.setSize(timerSprite.getWidth() * 0.4f, timerSprite.getHeight() * 0.4f);
         timerSprite.setCenter((float)Gdx.graphics.getWidth() / 2.f, (float) Gdx.graphics.getHeight() / 2.f);
+
+        //Make the health bars
+        player1Health = new HealthBar(new Vector2(10, height - 30), "loadingscreen/three.png", 1000, 1);
+        player2Health = new HealthBar(new Vector2(width * 4.f / 7.f - 10, height - 30), "loadingscreen/three.png", 1000, 2);
     }
 
     @Override
     public void handleInput() {
 
         if(isFirstTime) {
+            player1.mHealth = player1Health;
+            player2.mHealth = player2Health;
             return;
         }
 
@@ -93,6 +102,13 @@ public class MainGame extends State{
         // See if the pause key is pressed
         if (manager.getPlayerStart(1) || manager.getPlayerStart(2)){
             //Pause the game
+        }
+
+        // Check if the game is done
+        if (player1.health <= 0){
+            // Player 1 wins
+        }else if (player2.health <= 0){
+            // Player 2 wins
         }
 
         // Now look at the left stick and assign player velocities
@@ -292,9 +308,7 @@ public class MainGame extends State{
                 if ((j.playerID == 1 && p == player1) || (j.playerID == 2 && p ==player2)) {
                     // don't shoot yourself
                 } else {
-                    if (p.getRekt()) {
-                        // player is rekt
-                    }
+                    p.decrementHealth(50);
 
                     // remove the projectile
                     entities.remove(j);
@@ -363,6 +377,8 @@ public class MainGame extends State{
         for (GameObject entity : entities) {
             entity.render(batch);
         }
+        player1Health.render(batch);
+        player2Health.render(batch);
 
         if(isFirstTime) {
             timerSprite.draw(batch);
