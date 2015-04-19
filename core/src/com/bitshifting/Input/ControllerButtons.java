@@ -78,6 +78,15 @@ public class ControllerButtons {
         return 1;
     }
 
+    public static int getXButton(String name){
+        if (name.equals(XboxName)){
+            return XboxX;
+        }else if (name.equals(P880Name)){
+            return P880B1;
+        }
+        return 1;
+    }
+
     public static int getStart(String name){
         if (name.equals(XboxName)){
             return XboxStart;
