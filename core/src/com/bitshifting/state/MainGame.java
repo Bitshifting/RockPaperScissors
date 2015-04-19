@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.bitshifting.CollisionEvent;
 import com.bitshifting.entities.*;
@@ -166,10 +167,10 @@ public class MainGame extends State{
         }
 
         // add random drops
-        if (Math.random() < 0.002) {
+        if (Math.random() < 0.005) {
             // Spawn new random drop
             ProjectileType type = Math.random() < 0.33 ? ProjectileType.PAPER : Math.random() < 0.5 ? ProjectileType.ROCK : ProjectileType.SCISSOR;
-            entities.add (new PowerUpObject(new Vector2((float)(Math.random() * (Gdx.graphics.getWidth() - 40) + 20), (float)(Math.random() * (Gdx.graphics.getHeight() - 40) + 20)
+            entities.add (new PowerUpObject(new Vector2((float)(Math.random() * (Gdx.graphics.getWidth() - 200) + 100), (float)(Math.random() * (Gdx.graphics.getHeight() - 200) + 100)
             ), type));
         }
         
@@ -338,6 +339,13 @@ public class MainGame extends State{
                 if (p.position.x < 0 || p.position.y < 0 || p.position.x > Gdx.graphics.getWidth() || p.position.y > Gdx.graphics.getHeight()) {
                     itr.remove();
                     System.out.println("removed oob projectile");
+                }
+            }
+
+            // Randomly remove pickups
+            if (g instanceof  PowerUpObject) {
+                if (Math.random() < 0.001) {
+                    itr.remove();
                 }
             }
         }
