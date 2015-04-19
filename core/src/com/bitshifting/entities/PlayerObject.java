@@ -1,10 +1,13 @@
 package com.bitshifting.entities;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.bitshifting.state.MainGame;
+
+import java.util.List;
 
 /**
  * Created by Sam on 4/18/2015.
@@ -25,9 +28,10 @@ public class PlayerObject extends GameObject {
     private int cycle;
     private int lastDirection;
 
-    private Texture[] bodyDown;
-    private Texture[] bodySide;
-    private Texture[] bodyUp;
+    private Sprite body;
+    private Sprite[] bodyDown;
+    private Sprite[] bodySide;
+    private Sprite[] bodyUp;
 
     public PlayerObject(Vector2 position, int id, ProjectileType currentType) {
         super(position, "tito.png");
@@ -35,44 +39,41 @@ public class PlayerObject extends GameObject {
         this.currentType = currentType;
         this.health = 1000;
 
-        bodyDown = new Texture[3];
-        bodySide = new Texture[3];
-        bodyUp = new Texture[3];
+        bodyDown = new Sprite[3];
+        bodySide = new Sprite[3];
+        bodyUp = new Sprite[3];
 
         if (PLAYER_1 == id) {
             // set up for player 1
-            bodyDown[0] = new Texture("player 1/p1_down_run1.png");
-            bodyDown[1] = new Texture("player 1/p1_down_stand.png");
-            bodyDown[2] = new Texture("player 1/p1_down_run2.png");
+            bodyDown[0] = new Sprite(new Texture("player 1/p1_down_run1.png"));
+            bodyDown[1] = new Sprite(new Texture("player 1/p1_down_stand.png"));
+            bodyDown[2] = new Sprite(new Texture("player 1/p1_down_run2.png"));
 
-            bodySide[0] = new Texture("player 1/p1_side_run1.png");
-            bodySide[1] = new Texture("player 1/p1_side_stand.png");
-            bodySide[2] = new Texture("player 1/p1_side_run2.png");
+            bodySide[0] = new Sprite(new Texture("player 1/p1_side_run1.png"));
+            bodySide[1] = new Sprite(new Texture("player 1/p1_side_stand.png"));
+            bodySide[2] = new Sprite(new Texture("player 1/p1_side_run2.png"));
 
-            bodyUp[0] = new Texture("player 1/p1_up_run1.png");
-            bodyUp[1] = new Texture("player 1/p1_up_stand.png");
-            bodyUp[2] = new Texture("player 1/p1_up_run2.png");
+            bodyUp[0] = new Sprite(new Texture("player 1/p1_up_run1.png"));
+            bodyUp[1] = new Sprite(new Texture("player 1/p1_up_stand.png"));
+            bodyUp[2] = new Sprite(new Texture("player 1/p1_up_run2.png"));
         }
         else if (PLAYER_2 == id) {
             // set up for player 1
-            bodyDown[0] = new Texture("player 2/p2_down_run1.png");
-            bodyDown[1] = new Texture("player 2/p2_down_stand.png");
-            bodyDown[2] = new Texture("player 2/p2_down_run2.png");
+            bodyDown[0] = new Sprite(new Texture("player 2/p2_down_run1.png"));
+            bodyDown[1] = new Sprite(new Texture("player 2/p2_down_stand.png"));
+            bodyDown[2] = new Sprite(new Texture("player 2/p2_down_run2.png"));
 
-            bodySide[0] = new Texture("player 2/p2_side_run1.png");
-            bodySide[1] = new Texture("player 2/p2_side_stand.png");
-            bodySide[2] = new Texture("player 2/p2_side_run2.png");
+            bodySide[0] = new Sprite(new Texture("player 2/p2_side_run1.png"));
+            bodySide[1] = new Sprite(new Texture("player 2/p2_side_stand.png"));
+            bodySide[2] = new Sprite(new Texture("player 2/p2_side_run2.png"));
 
-            bodyUp[0] = new Texture("player 2/p2_up_run1.png");
-            bodyUp[1] = new Texture("player 2/p2_up_stand.png");
-            bodyUp[2] = new Texture("player 2/p2_up_run2.png");
+            bodyUp[0] = new Sprite(new Texture("player 2/p2_up_run1.png"));
+            bodyUp[1] = new Sprite(new Texture("player 2/p2_up_stand.png"));
+            bodyUp[2] = new Sprite(new Texture("player 2/p2_up_run2.png"));
         }
 
         cycle = STANDING;
         sideStand();
-
-        sprite.setSize(sprite.getWidth() * 0.5f, sprite.getHeight() * 0.5f);
-        sprite.setPosition(position.x, position.y);
     }
 
     public void changeProjectile(ProjectileType newType) {
@@ -138,47 +139,61 @@ public class PlayerObject extends GameObject {
 
     @Override
     public void update(float dt) {
-        this.lastPosition = new Vector2(this.position);
-        this.position.x += dt * this.velocity.x * MainGame.VELOCITY_MOD;
-        this.position.y += dt * this.velocity.y * MainGame.VELOCITY_MOD;
+        this.lastPosition = this.position;
 
-        float thresholdVelocity = 0.2f;
+        this.position = new Vector2(this.position.x + dt * this.velocity.x * MainGame.VELOCITY_MOD, this.position.y + dt * this.velocity.y * MainGame.VELOCITY_MOD);
 
-        if (Math.abs(this.velocity.x) < 0.001f && Math.abs(this.velocity.y) < 0.001f) {
+        if (this.velocity.x == 0 && this.velocity.y == 0) {
             callStand();
         }
-
-        //use x direction
-        else if(Math.abs(this.velocity.x) > Math.abs(this.velocity.y)) {
-            if(this.velocity.x < -thresholdVelocity) {
-                sideRun();
-            } else if(this.velocity.x > thresholdVelocity) {
-                sideRun();
-            } else {
-                callStand();
+        else if (this.velocity.x > 0) {
+            // right
+            if (this.velocity.y > 0) {
+                // up
+                if (Math.abs(this.velocity.y) > Math.abs(this.velocity.x)) {
+                    upRun();
+                }
+                else if (Math.abs(this.velocity.y) <= Math.abs(this.velocity.x)) {
+                    sideRun();
+                }
+            }
+            else if (this.velocity.y < 0) {
+                // down
+                if (Math.abs(this.velocity.y) > Math.abs(this.velocity.x)) {
+                    downRun();
+                }
+                else if (Math.abs(this.velocity.y) <= Math.abs(this.velocity.x)) {
+                    sideRun();
+                }
+            }
+        }
+        else if (this.velocity.x < 0) {
+            // left
+            if (this.velocity.y > 0) {
+                // up
+                if (Math.abs(this.velocity.y) > Math.abs(this.velocity.x)) {
+                    upRun();
+                }
+                else if (Math.abs(this.velocity.y) <= Math.abs(this.velocity.x)) {
+                    sideRun();
+                }
+            }
+            else if (this.velocity.y < 0) {
+                // down
+                if (Math.abs(this.velocity.y) > Math.abs(this.velocity.x)) {
+                    downRun();
+                }
+                else if (Math.abs(this.velocity.y) <= Math.abs(this.velocity.x)) {
+                    sideRun();
+                }
             }
         }
 
-        //use y direction
-        else if(Math.abs(this.velocity.y) > Math.abs(this.velocity.x)) {
-            if(this.velocity.y < -thresholdVelocity) {
-                downRun();
-            } else if(this.velocity.y > thresholdVelocity) {
-                upRun();
-            } else {
-                callStand();
-            }
-        } else {
-            if(this.velocity.y < -thresholdVelocity) {
-                downRun();
-            } else if(this.velocity.y > thresholdVelocity) {
-                upRun();
-            } else {
-                callStand();
-            }
+        for (int i = 0; i < 3; i++) {
+            bodySide[i].setPosition(this.position.x, this.position.y);
+            bodyUp[i].setPosition(this.position.x, this.position.y);
+            bodyDown[i].setPosition(this.position.x, this.position.y);
         }
-
-        sprite.setPosition(this.position.x, this.position.y);
 
         this.bouncing = false;
     }
@@ -190,7 +205,7 @@ public class PlayerObject extends GameObject {
 
     @Override
     public void render(SpriteBatch batch) {
-        sprite.draw(batch);
+        body.draw(batch);
     }
 
     @Override
@@ -213,37 +228,37 @@ public class PlayerObject extends GameObject {
     }
 
     private void downStand() {
-        sprite.setTexture(bodyDown[STANDING]);
+        body = bodyDown[STANDING];
         cycle = STANDING;
         lastDirection = DOWN;
     }
 
     private void downRun() {
-        sprite.setTexture(bodyDown[cycle]);
+        body = bodyDown[cycle];
         cycle = (cycle + 1) % 3;
         lastDirection = DOWN;
     }
 
     private void upStand() {
-        sprite.setTexture(bodyUp[STANDING]);
+        body = bodyUp[STANDING];
         cycle = STANDING;
         lastDirection = UP;
     }
 
     private void upRun() {
-        sprite.setTexture(bodyUp[cycle]);
+        body = bodyUp[cycle];
         cycle = (cycle + 1) % 3;
         lastDirection = UP;
     }
 
     private void sideStand() {
-        sprite.setTexture(bodySide[STANDING]);
+        body = bodySide[STANDING];
         cycle = STANDING;
         lastDirection = SIDE;
     }
 
     private void sideRun() {
-        sprite.setTexture(bodySide[cycle]);
+        body = bodySide[cycle];
         cycle = (cycle + 1) % 3;
         lastDirection = SIDE;
     }
