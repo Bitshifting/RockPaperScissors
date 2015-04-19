@@ -90,6 +90,15 @@ public class MainGame extends State{
 
     @Override
     public void update(float dt) {
+        // add random drops
+        if (Math.random() < 0.01) {
+            // Spawn new random drop
+            ProjectileType type = Math.random() < 0.33 ? ProjectileType.PAPER : Math.random() < 0.5 ? ProjectileType.ROCK : ProjectileType.SCISSOR;
+            entities.add (new PowerUpObject(new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), new Vector2(0,0), type));
+        }
+
+        
+
         // Run update on all the entities
         for (GameObject o : entities) {
             o.update(dt);
