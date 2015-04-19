@@ -2,6 +2,7 @@ package com.bitshifting.state;
 
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenManager;
+import aurelienribon.tweenengine.equations.Bounce;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.graphics.Color;
@@ -33,7 +34,7 @@ public class MainMenu extends State {
     Image fistsImage;
 
     TweenManager tweenManager;
-//    float tweenDuration =
+    float tweenDuration = 1.0f;
 
     public MainMenu(StateManager sm) {
         super(sm);
@@ -131,7 +132,12 @@ public class MainMenu extends State {
         fistsImage = new Image(new Texture("menu/menu_fists.png"));
         fistsImage.setSize(width, height);
 
-//        Tween.to(fistsImage, ImageTweenAccessor.POSITION_Y, 1.0f)
+        Tween.to(fistsImage, ImageTweenAccessor.POSITION_Y, tweenDuration)
+                .targetRelative(50)
+                .ease(Bounce.IN)
+                .repeat(Tween.INFINITY, 0)
+                .repeatYoyo(Tween.INFINITY, 0)
+                .start(tweenManager);
 
         stage.addActor(background);
         stage.addActor(fistsImage);
