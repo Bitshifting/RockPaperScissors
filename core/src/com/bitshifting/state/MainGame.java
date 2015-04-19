@@ -70,10 +70,10 @@ public class MainGame extends State{
 
         batch = new SpriteBatch();
 
-        threeTex = new Texture("loadingScreen/three.png");
-        twoTex = new Texture("loadingScreen/two.png");
-        oneTex = new Texture("loadingScreen/one.png");
-        goTex = new Texture("loadingScreen/go.png");
+        threeTex = new Texture("loadingscreen/three.png");
+        twoTex = new Texture("loadingscreen/two.png");
+        oneTex = new Texture("loadingscreen/one.png");
+        goTex = new Texture("loadingscreen/go.png");
 
         timerSprite = new Sprite(threeTex);
         timerSprite.setSize(timerSprite.getWidth() * 0.4f, timerSprite.getHeight() * 0.4f);
