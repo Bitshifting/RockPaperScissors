@@ -12,11 +12,12 @@ public class PlayerObject extends GameObject {
     public int health; // health value (starts at 1000 currently)
     public ProjectileType currentType; // the current projectile type that the player has
 
-    public PlayerObject(Vector2 position, Vector2 boundingBox, int id, ProjectileType currentType) {
-        super(position, boundingBox);
+    public PlayerObject(Vector2 position, int id, ProjectileType currentType) {
+        super(position, new Vector2(0, 0));
         this.playerID = id;
         this.currentType = currentType;
         this.health = 1000;
+        this.boundingBox = new Vector2(this.texture.getWidth(), this.texture.getHeight());
     }
 
     public void changeProjectile(ProjectileType newType) {

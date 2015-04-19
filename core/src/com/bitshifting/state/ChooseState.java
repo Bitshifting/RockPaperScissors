@@ -50,6 +50,9 @@ public class ChooseState extends State {
         player1Pressed = false;
         player2Pressed = false;
 
+        //width of wall
+       //float widthOfWall = game;
+
         player1StartingPos = new Vector2(0, 0);
         player2StartingPos = new Vector2(0, 0);
         playerBoundingBox = new Vector2(50, 50);
@@ -94,11 +97,15 @@ public class ChooseState extends State {
     public void handleInput() {
         //let's the user choose the input
         for(int i = 1; i <= 2; i++) {
-            if (InputManager.getInstance().getPlayerDLeft(i) || InputManager.getInstance().getPlayerA(i)) {
+            if (InputManager.getInstance().getPlayerDLeft(i) || InputManager.getInstance().getPlayerX(i)) {
                 if (i == 1) {
-                    game.player1 = new PlayerObject(player1StartingPos, playerBoundingBox, i, ProjectileType.ROCK);
+                    if(game.player1 == null) {
+                        game.player1 = new PlayerObject(player1StartingPos, i, ProjectileType.ROCK);
+                    }
                 } else {
-                    game.player2 = new PlayerObject(player2StartingPos, playerBoundingBox, i, ProjectileType.ROCK);
+                    if(game.player2 == null) {
+                        game.player2 = new PlayerObject(player2StartingPos, i, ProjectileType.ROCK);
+                    }
                 }
 
                 System.out.println("Player " + i + " chose Rock!");
@@ -106,19 +113,27 @@ public class ChooseState extends State {
 
             if (InputManager.getInstance().getPlayerDRight(i) || InputManager.getInstance().getPlayerB(i)) {
                 if (i == 1) {
-                    game.player1 = new PlayerObject(player1StartingPos, playerBoundingBox, i, ProjectileType.SCISSOR);
+                    if(game.player1 == null) {
+                        game.player1 = new PlayerObject(player1StartingPos, i, ProjectileType.SCISSOR);
+                    }
                 } else {
-                    game.player2 = new PlayerObject(player2StartingPos, playerBoundingBox, i, ProjectileType.SCISSOR);
+                    if(game.player2 == null) {
+                        game.player2 = new PlayerObject(player2StartingPos, i, ProjectileType.SCISSOR);
+                    }
                 }
 
                 System.out.println("Player " + i + " chose Scissors!");
             }
 
-            if(InputManager.getInstance().getPlayerDDown(i) || InputManager.getInstance().getPlayerX(i)) {
+            if(InputManager.getInstance().getPlayerDDown(i) || InputManager.getInstance().getPlayerA(i)) {
                 if (i == 1) {
-                    game.player1 = new PlayerObject(player1StartingPos, playerBoundingBox, i, ProjectileType.PAPER);
+                    if(game.player1 == null) {
+                        game.player1 = new PlayerObject(player1StartingPos, i, ProjectileType.PAPER);
+                    }
                 } else {
-                    game.player2 = new PlayerObject(player2StartingPos, playerBoundingBox, i, ProjectileType.PAPER);
+                    if(game.player2 == null) {
+                        game.player2 = new PlayerObject(player2StartingPos, i, ProjectileType.PAPER);
+                    }
                 }
 
                 System.out.println("Player " + i + " chose Paper!");
@@ -131,6 +146,8 @@ public class ChooseState extends State {
     public void update(float dt) {
         //both not null, it is time to start
         if (game.player1 != null && game.player2 != null) {
+            game.entities.add(game.player1);
+            game.entities.add(game.player2);
             sm.popState();
         }
     }
