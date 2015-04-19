@@ -4,13 +4,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.bitshifting.CollisionEvent;
 import com.bitshifting.entities.GameObject;
-import com.bitshifting.entities.PlayerObject;
-import com.bitshifting.entities.WallObject;
+import com.bitshifting.entities.ProjectileObject;
 import com.bitshifting.managers.InputManager;
 import com.bitshifting.managers.StateManager;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -75,38 +73,71 @@ public class MainGame extends State{
             }
         }
 
-        /*
-        Things we want to do:
-        We want to detect collisions between players/bullets/walls
-        Update player health, despan bullets that collide. Update positions in general
-        Randomly spawn powerups
-         */
-        // First see if any player movement has been performed. If so, give the player a velocity and update their positions
-        // Now update the positions of all the bullets based on their velocities
-        // Collision detection. We now have the updated positions of all the objects
-        // Iterate through the moving objects (players, bullets) and determine if they collide
-        /*
-        Collision rules:
-        A player hitting a wall: Take the position and add a negative velocity to it (this will effectively undo movement)
-        A bullet hitting a player: Assume the bullet was fired from the other player, so don't check.
-            Despawn the bullet and decrease the player's health by some amount
-        A bullet hitting a wall: Despawn the bullet
-        A bullet hitting another bullet: It can do one of three things depending on the types of the two bullets
-            Bullet inferior: Despawn the bullet (other bullet is unaffected)
-            Bullets equal: Despawn both bullets
-            Bullet greater: Despawn the other bullet (this bullet is unaffected)
-        Walls cannot (hopefully) collide with other walls, so we'll leave them be
-         */
         for (CollisionEvent c : collisionEvents) {
 
-            if ((c.collider1 instanceof PlayerObject && c.collider2 instanceof WallObject) ||
-                    (c.collider2 instanceof PlayerObject && c.collider1 instanceof WallObject)) {
-                // Player hitting a wall.
+            if (c.collider1 instanceof ProjectileObject && c.collider2 instanceof ProjectileObject) {
+                // Resolve which one is better and kill the inferior object; in a tie, kill both
+                ProjectileObject p1 = (ProjectileObject)c.collider1;
+                ProjectileObject p2 = (ProjectileObject)c.collider2;
 
+                int winner = 0; // if 1, it's p1, if 2, it's p2, 0 = tie
+
+                // Switch on the other projectile
+                switch (p1.type) {
+                    case PAPER:
+                        switch (p2.type) {
+                            case PAPER:
+                                winner = 0;
+                                break;
+                            case ROCK:
+                                winner = 1;
+                                break;
+                            case SCISSOR:
+                                winner = 2;
+                                break;
+                        }
+                        break;
+                    case ROCK:
+                        switch (p2.type) {
+                            case PAPER:
+                                winner = 2;
+                                break;
+                            case ROCK:
+                                winner = 0;
+                                break;
+                            case SCISSOR:
+                                winner = 1;
+                                break;
+                        }
+                        break;
+                    case SCISSOR:
+                        switch (p2.type) {
+                            case PAPER:
+                                winner = 1;
+                                break;
+                            case ROCK:
+                                winner = 2;
+                                break;
+                            case SCISSOR:
+                                winner = 0;
+                                break;
+                        }
+                        break;
+                }
+
+                switch (winner) {
+                    case 0:
+                        entities.remove(p1);
+                        entities.remove(p2);
+                        break;
+                    case 1:
+                        entities.remove(p2);
+                        break;
+                    case 2:
+                        entities.remove(p1);
+                        break;
+                }
             }
-
-
-
         }
 
         // Determine if a player has died in the last update, if so, end the game or something

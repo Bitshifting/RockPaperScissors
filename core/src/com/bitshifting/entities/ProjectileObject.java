@@ -8,9 +8,9 @@ import com.badlogic.gdx.math.Vector2;
  * Has a specific type that is set when fired. This type shouldn't change
  */
 public class ProjectileObject extends GameObject {
-    ProjectileType type; // type of projectile it is (rock, paper, scissors)
-    int damageAmount; // base damage amount before modifiers
-    int playerID; // the ID of the player that fired it (just in case we need it)
+    public ProjectileType type; // type of projectile it is (rock, paper, scissors)
+    public int damageAmount; // base damage amount before modifiers
+    public int playerID; // the ID of the player that fired it (just in case we need it)
 
     public ProjectileObject(Vector2 position, Vector2 boundingBox, ProjectileType type, int playerID) {
         super(position, boundingBox);
