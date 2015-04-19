@@ -33,6 +33,16 @@ public class MainGame extends State{
     Texture f;
     InputManager inputs; // The manager for the inputs
 
+    //set a time for the first time
+    private boolean isFirstTime = true;
+    private float timerStart = 0;
+    private Sprite timerSprite;
+
+    private Texture threeTex;
+    private Texture twoTex;
+    private Texture oneTex;
+    private Texture goTex;
+
     public MainGame(StateManager sm){
         super(sm);
         float height = Gdx.graphics.getHeight();
@@ -51,10 +61,24 @@ public class MainGame extends State{
         walls.setSize(width, height);
 
         batch = new SpriteBatch();
+
+        threeTex = new Texture("loadingScreen/three.png");
+        twoTex = new Texture("loadingScreen/two.png");
+        oneTex = new Texture("loadingScreen/one.png");
+        goTex = new Texture("loadingScreen/go.png");
+
+        timerSprite = new Sprite(threeTex);
+        timerSprite.setSize(timerSprite.getWidth() * 0.4f, timerSprite.getHeight() * 0.4f);
+        timerSprite.setCenter((float)Gdx.graphics.getWidth() / 2.f, (float) Gdx.graphics.getHeight() / 2.f);
     }
 
     @Override
     public void handleInput() {
+
+        if(isFirstTime) {
+            return;
+        }
+
         InputManager manager = InputManager.getInstance();
         // We want to only handle inputs that would alter the game state (pause, fire, movement keys)
         // See if the pause key is pressed
@@ -92,6 +116,23 @@ public class MainGame extends State{
 
     @Override
     public void update(float dt) {
+
+        if(isFirstTime) {
+            timerStart += dt;
+
+            if(timerStart > 4.f) {
+                isFirstTime = false;
+            } else if(timerStart > 3.f) {
+                timerSprite.setTexture(goTex);
+            } else if(timerStart > 2.f) {
+                timerSprite.setTexture(oneTex);
+            } else if (timerStart > 1.f) {
+                timerSprite.setTexture(twoTex);
+            }
+
+            return;
+        }
+
         // Run update on all the entities
         for (GameObject o : entities) {
             o.update(dt);
@@ -234,6 +275,9 @@ public class MainGame extends State{
             entity.render(batch);
         }
 
+        if(isFirstTime) {
+            timerSprite.draw(batch);
+        }
 
         batch.end();
     }
