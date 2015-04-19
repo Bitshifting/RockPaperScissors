@@ -1,17 +1,21 @@
 package com.bitshifting.state;
 
+import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.bitshifting.entities.ImageTweenAccessor;
 import com.bitshifting.managers.StateManager;
 
 import javax.xml.soap.Text;
@@ -26,11 +30,15 @@ public class MainMenu extends State {
     ImageButton exitButton;
     ImageButton shootButton;
     ImageButton settingsButton;
+    Image fistsImage;
 
     TweenManager tweenManager;
+//    float tweenDuration =
 
     public MainMenu(StateManager sm) {
         super(sm);
+
+        Tween.registerAccessor(Image.class, new ImageTweenAccessor());
 
         float width = Gdx.graphics.getWidth();
         float height = Gdx.graphics.getHeight();
@@ -112,11 +120,21 @@ public class MainMenu extends State {
 
         exitButton.addListener(new ClickListener() {
             @Override
-            public void clicked (InputEvent event, float x, float y) {
+            public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.exit();
             }
         });
 
+        Image background = new Image(new Texture("menu/menu_bg.png"));
+        background.setSize(width, height);
+
+        fistsImage = new Image(new Texture("menu/menu_fists.png"));
+        fistsImage.setSize(width, height);
+
+//        Tween.to(fistsImage, ImageTweenAccessor.POSITION_Y, 1.0f)
+
+        stage.addActor(background);
+        stage.addActor(fistsImage);
         stage.addActor(exitButton);
         stage.addActor(shootButton);
         stage.addActor(settingsButton);
@@ -128,7 +146,7 @@ public class MainMenu extends State {
     }
 
     public void update(float dt) {
-
+        tweenManager.update(dt);
     }
 
     public void render() {
