@@ -14,11 +14,10 @@ public class PlayerObject extends GameObject {
     public ProjectileType currentType; // the current projectile type that the player has
 
     public PlayerObject(Vector2 position, int id, ProjectileType currentType) {
-        super(position, new Vector2(0, 0));
+        super(position, "tito.png");
         this.playerID = id;
         this.currentType = currentType;
         this.health = 1000;
-        this.boundingBox = new Vector2(this.texture.getWidth(), this.texture.getHeight());
     }
 
     public void changeProjectile(ProjectileType newType) {
@@ -36,14 +35,55 @@ public class PlayerObject extends GameObject {
      * @return
      */
     public ProjectileObject fire(Vector2 direction) {
-        //TODO
-        return null;
+
+        Vector2 newDirection = new Vector2(0, 0);
+
+        float thresholdForShooting = 0.5f;
+
+        //set the velocity direction
+
+        if(Math.abs(direction.x) > thresholdForShooting) {
+            if(direction.x > thresholdForShooting) {
+                newDirection.x = 1.f;
+            } else if( direction.x < thresholdForShooting) {
+                newDirection.x = -1.f;
+            }
+        }
+
+        if(Math.abs(direction.y) > thresholdForShooting) {
+            if(direction.y > thresholdForShooting) {
+                newDirection.y = 1.f;
+            } else if (direction.y < thresholdForShooting) {
+                newDirection.y = -1.f;
+            }
+        }
+
+        //normalize the velocity
+        newDirection.nor();
+
+        ProjectileObject projectile;
+
+        if(this.currentType == ProjectileType.ROCK) {
+            projectile = new RockProjectile(new Vector2(this.position), ProjectileType.ROCK, this.playerID);
+
+        } else if(this.currentType == ProjectileType.PAPER) {
+            projectile = new PaperProjectile(new Vector2(this.position), ProjectileType.ROCK, this.playerID);
+        } else {
+            projectile = new ScissorProjectile(new Vector2(this.position), ProjectileType.ROCK, this.playerID);
+        }
+
+        projectile.velocity = newDirection;
+
+        return projectile;
     }
 
     @Override
     public void update(float dt) {
         this.position.x += dt * this.velocity.x * MainGame.VELOCITY_MOD;
         this.position.y += dt * this.velocity.y * MainGame.VELOCITY_MOD;
+
+        this.lastPosition = this.position;
+        this.bouncing = false;
     }
 
     @Override

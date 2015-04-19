@@ -22,8 +22,6 @@ public class ChooseState extends State {
     Vector2 player1StartingPos;
     Vector2 player2StartingPos;
 
-    Vector2 playerBoundingBox;
-
     Texture instructionSheet;
     Sprite instructionSheetSprite;
 
@@ -55,7 +53,6 @@ public class ChooseState extends State {
 
         player1StartingPos = new Vector2(widthOfWall, 0);
         player2StartingPos = new Vector2(Gdx.graphics.getWidth() - widthOfWall - 100.f, Gdx.graphics.getHeight() - widthOfWall - 100.f);
-        playerBoundingBox = new Vector2(50, 50);
 
         readyBox = new Texture("selectmenu/ready.png");
         notReadyBox = new Texture("selectmenu/notready.png");
