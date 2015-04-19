@@ -1,9 +1,8 @@
 package com.bitshifting.state;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.bitshifting.CollisionEvent;
 import com.bitshifting.entities.GameObject;
 import com.bitshifting.managers.InputManager;
 import com.bitshifting.managers.StateManager;
@@ -16,6 +15,7 @@ import java.util.List;
  * Created by sschwebach on 4/18/15.
  */
 public class MainGame extends State{
+    // References into the entities array!
     GameObject player1;
     GameObject player2;
 
@@ -42,6 +42,8 @@ public class MainGame extends State{
 
     @Override
     public void update(float dt) {
+        ArrayList<CollisionEvent> collisionEvents = new ArrayList<CollisionEvent>();
+
         // Move all entities to their next position based on their velocity
         for (GameObject o : entities) {
             o.lastPosition = o.position;
@@ -59,6 +61,7 @@ public class MainGame extends State{
                 if (o.collidesWith(p)) {
                     o.bouncing = true;
                     p.bouncing = true;
+                    collisionEvents.add(new CollisionEvent(o, p));
                 }
             }
         }
@@ -94,10 +97,6 @@ public class MainGame extends State{
         Walls cannot (hopefully) collide with other walls, so we'll leave them be
          */
 
-        // First iterate through the players and detect the first two
-
-        // Now iterate through the bullets and detect the next three
-
 
         Iterator<GameObject> objectIterator = entities.iterator();
 
@@ -111,10 +110,6 @@ public class MainGame extends State{
         for (GameObject entity : entities){
             batch.draw(entity.texture, entity.position.x, entity.position.y);
         }
-
-        // Draw the players on top of other entities
-        batch.draw(player1.texture, player1.position.x, player1.position.y);
-        batch.draw(player2.texture, player2.position.x, player2.position.y);
 
         batch.end();
     }
