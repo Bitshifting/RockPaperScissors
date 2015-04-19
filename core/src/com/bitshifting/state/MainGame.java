@@ -21,7 +21,7 @@ public class MainGame extends State{
     // References into the entities array!
     PlayerObject player1;
     PlayerObject player2;
-    public static final float VELOCITY_MOD = 1.0f; //change this to correctly adjust the velocity to a reasonable level
+    public static final float VELOCITY_MOD = 50.0f; //change this to correctly adjust the velocity to a reasonable level
 
     SpriteBatch batch; // Our sprite batch for rendering
     List<GameObject> entities; // the list of game entities
