@@ -17,7 +17,7 @@ import java.util.List;
  * Created by sschwebach on 4/18/15.
  */
 public class MainGame extends State{
-    //public static final float
+    public static final float WIDTH_OF_WALL = (float) Gdx.graphics.getWidth() / 10.f;
     // References into the entities array!
     PlayerObject player1;
     PlayerObject player2;
