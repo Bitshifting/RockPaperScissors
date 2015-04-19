@@ -1,5 +1,6 @@
 package com.bitshifting.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -29,11 +30,19 @@ public class PlayerObject extends GameObject {
     private Texture[] bodySide;
     private Texture[] bodyUp;
 
+    private Texture paperBazook;
+    private Texture rockBazook;
+    private Texture scissorBazook;
+    Sprite bazookSprite;
+
     boolean flipped = false;
     public HealthBar mHealth;
 
+    Vector2 posOfBazook;
+
     public PlayerObject(Vector2 position, int id, ProjectileType currentType) {
         super(position, "tito.png");
+        this.sprite.setOriginCenter();
         this.playerID = id;
         this.currentType = currentType;
         this.health = 1000;
@@ -71,19 +80,60 @@ public class PlayerObject extends GameObject {
             bodyUp[2] = new Texture("player 2/p2_up_run2.png");
         }
 
+        paperBazook = new Texture("bazooka/bazooka_paper.png");
+        rockBazook = new Texture("bazooka/bazooka_rcok.png");
+        scissorBazook = new Texture("bazooka/bazooka_scissor.png");
+
+        if(currentType == ProjectileType.PAPER) {
+            bazookSprite = new Sprite(paperBazook);
+        } else if(currentType == ProjectileType.ROCK) {
+            bazookSprite = new Sprite(rockBazook);
+        } else if(currentType == ProjectileType.SCISSOR) {
+            bazookSprite = new Sprite(scissorBazook);
+        }
+
         cycle = STANDING;
         sideStand(id == PLAYER_2);
 
         sprite.setSize(sprite.getWidth() * 0.5f, sprite.getHeight() * 0.5f);
+        bazookSprite.setSize(bazookSprite.getWidth() * 0.5f, bazookSprite.getHeight() * .5f);
+        bazookSprite.setOriginCenter();
+
         sprite.setPosition(position.x, position.y);
+        bazookSprite.setCenter(sprite.getX() + sprite.getWidth() / 2.f, sprite.getY() + sprite.getHeight() / 4.f);
+        posOfBazook = new Vector2(0, 0);
     }
 
     public void changeProjectile(ProjectileType newType) {
         this.currentType = newType;
+
+        //change bazooka type
+        if(currentType == ProjectileType.PAPER) {
+            bazookSprite.setTexture(paperBazook);
+        } else if(currentType == ProjectileType.ROCK) {
+            bazookSprite .setTexture(rockBazook);
+        } else if(currentType == ProjectileType.SCISSOR) {
+            bazookSprite.setTexture(scissorBazook);
+        }
     }
 
     public ProjectileType getProjectileType() {
         return this.currentType;
+    }
+
+    /**
+     * Call to cause damage to player. Returns true if ded and false if still alive
+     *
+     * @return ded status
+     */
+    public boolean getRekt() {
+        health -= 100;
+        if (health <= 0) {
+            System.out.println("Player " + this.playerID + " got rekt and is now ded.");
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -125,13 +175,15 @@ public class PlayerObject extends GameObject {
 
         ProjectileObject projectile;
 
+        Vector2 centerOfCharacter = new Vector2(sprite.getX() + sprite.getWidth() / 2.f, sprite.getY() + sprite.getHeight() / 2.f);
+
         if(this.currentType == ProjectileType.ROCK) {
-            projectile = new RockProjectile(new Vector2(this.position), ProjectileType.ROCK, this.playerID);
+            projectile = new RockProjectile(centerOfCharacter, ProjectileType.ROCK, this.playerID);
 
         } else if(this.currentType == ProjectileType.PAPER) {
-            projectile = new PaperProjectile(new Vector2(this.position), ProjectileType.ROCK, this.playerID);
+            projectile = new PaperProjectile(centerOfCharacter, ProjectileType.PAPER, this.playerID);
         } else {
-            projectile = new ScissorProjectile(new Vector2(this.position), ProjectileType.ROCK, this.playerID);
+            projectile = new ScissorProjectile(centerOfCharacter, ProjectileType.SCISSOR, this.playerID);
         }
 
         projectile.velocity = newDirection;
@@ -181,7 +233,32 @@ public class PlayerObject extends GameObject {
             }
         }
 
+        if (this.position.x < 0)
+            this.position.x = 0;
+        if (this.position.y < 0)
+            this.position.y = 0;
+        if (this.position.y + this.sprite.getHeight() > Gdx.graphics.getHeight())
+            this.position.y = Gdx.graphics.getHeight() - this.sprite.getHeight();
+        if (this.position.x + this.sprite.getWidth() > Gdx.graphics.getWidth())
+            this.position.x = Gdx.graphics.getWidth() - this.sprite.getWidth();
+
         sprite.setPosition(this.position.x, this.position.y);
+
+        if(lastDirection == SIDE) {
+            posOfBazook.x = sprite.getX() + sprite.getWidth() / 2.f;
+            posOfBazook.y = sprite.getY() + sprite.getHeight() / 4.f;
+            bazookSprite.setCenter(sprite.getX() + sprite.getWidth() / 2.f, sprite.getY() + sprite.getHeight() / 4.f);
+        } else if(lastDirection == UP){
+            posOfBazook.x = sprite.getX() + sprite.getWidth() * (9.f / 10.f);
+            posOfBazook.y = sprite.getY() + sprite.getHeight() / 2.f;
+            flipped = false;
+            bazookSprite.setCenter(sprite.getX() + sprite.getWidth() * (9.f / 10.f), sprite.getY() + sprite.getHeight() / 2.f);
+        } else {
+            posOfBazook.x = sprite.getX() + (sprite.getWidth() / 10.f);
+            posOfBazook.y = sprite.getY() + sprite.getHeight() / 4.f;
+            flipped = false;
+            bazookSprite.setCenter(sprite.getX() + (sprite.getWidth() / 10.f), sprite.getY() + sprite.getHeight() / 4.f);
+        }
 
         this.bouncing = false;
     }
@@ -193,7 +270,16 @@ public class PlayerObject extends GameObject {
 
     @Override
     public void render(SpriteBatch batch) {
-        sprite.draw(batch);
+        if(flipped) {
+            bazookSprite.setX(bazookSprite.getX() - bazookSprite.getWidth() / 8.f);
+            bazookSprite.draw(batch);
+            sprite.draw(batch);
+            bazookSprite.setX(bazookSprite.getX() + bazookSprite.getWidth() / 8.f);
+        } else {
+            sprite.draw(batch);
+            bazookSprite.draw(batch);
+        }
+
     }
 
     @Override
@@ -222,37 +308,51 @@ public class PlayerObject extends GameObject {
 
     private void downStand() {
         sprite.setTexture(bodyDown[STANDING]);
+        bazookSprite.setFlip(false, false);
+        bazookSprite.setRotation(270.f);
         cycle = STANDING;
         lastDirection = DOWN;
     }
 
     private void downRun() {
         sprite.setTexture(bodyDown[cycle]);
+        bazookSprite.setFlip(false, false);
+        bazookSprite.setRotation(270.f);
         cycle = (cycle + 1) % 3;
         lastDirection = DOWN;
     }
 
     private void upStand() {
         sprite.setTexture(bodyUp[STANDING]);
+        bazookSprite.setFlip(false, false);
+        bazookSprite.setRotation(90.f);
         cycle = STANDING;
         lastDirection = UP;
     }
 
     private void upRun() {
         sprite.setTexture(bodyUp[cycle]);
+        bazookSprite.setFlip(false, false);
+        bazookSprite.setRotation(90.f);
         cycle = (cycle + 1) % 3;
         lastDirection = UP;
     }
 
     private void sideStand(boolean flip) {
+        flipped = flip;
         sprite.setFlip(flip, false);
+        bazookSprite.setRotation(0.0f);
+        bazookSprite.setFlip(flip, false);
         sprite.setTexture(bodySide[STANDING]);
         cycle = STANDING;
         lastDirection = SIDE;
     }
 
     private void sideRun(boolean flip) {
+        flipped = flip;
         sprite.setFlip(flip, false);
+        bazookSprite.setRotation(0.0f);
+        bazookSprite.setFlip(flip, false);
         sprite.setTexture(bodySide[cycle]);
         cycle = (cycle + 1) % 3;
         lastDirection = SIDE;
